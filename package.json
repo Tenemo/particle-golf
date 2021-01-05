@@ -1,0 +1,19 @@
+{
+  "name": "particle-golf",
+  "version": "0.0.1",
+  "description": "particle-golf",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tenemo/particle-golf.git"
+  },
+  "author": "Piotr Piech",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Tenemo/particle-golf/issues"
+  },
+  "homepage": "https://github.com/Tenemo/particle-golf#readme"
+}
