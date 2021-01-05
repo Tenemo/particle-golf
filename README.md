@@ -1,1 +1,1 @@
-# particle-golf
+# Particle Golf
