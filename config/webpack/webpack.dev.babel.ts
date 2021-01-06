@@ -84,7 +84,7 @@ export default merge(commonConfig, {
                         loader: `css-loader`,
                         options: {
                             modules: {
-                                localIdentName: `[hash:base64]`,
+                                localIdentName: `[path]__[local]`,
                                 auto: (resourcePath: string) =>
                                     !resourcePath.includes('node_modules') &&
                                     !resourcePath.includes('global.'),
