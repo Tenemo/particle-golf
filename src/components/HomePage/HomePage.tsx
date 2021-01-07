@@ -34,6 +34,14 @@ const HomePage = (): ReactElement => {
                 >
                     Stop
                 </button>
+                <button
+                    onClick={() => {
+                        world.returnToOrigin();
+                    }}
+                    type="button"
+                >
+                    Return to origin
+                </button>
             </div>
             <div ref={sceneContainer} className={styles.sceneContainer} />
         </main>
