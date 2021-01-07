@@ -1,4 +1,10 @@
-import { PerspectiveCamera, Scene, WebGLRenderer, AxesHelper } from 'three';
+import {
+    PerspectiveCamera,
+    Scene,
+    WebGLRenderer,
+    AxesHelper,
+    Vector3,
+} from 'three';
 
 import { createCamera } from './items/camera';
 import { createCube } from './items/cube';
@@ -29,16 +35,9 @@ class World {
 
         container.append(renderer.domElement);
 
-        controls = createControls(
-            camera,
-            renderer.domElement,
-        ) as DampenedControls;
-        // controls.enablePan = false;
-        controls.enableDamping = true;
+        controls = createControls(camera, renderer.domElement);
 
         loop = new Loop(camera, scene, renderer, controls);
-
-        controls.tick = () => controls.update();
 
         cube = createCube();
 
@@ -63,14 +62,8 @@ class World {
     };
 
     returnToOrigin = (): void => {
-        controls.enabled = false;
-        controls.saveState();
-        controls.reset();
+        controls.moveCamera(new Vector3(1, 1, 20), new Vector3(0, 0, 0));
     };
-
-    render(): void {
-        renderer.render(scene, camera);
-    }
 }
 
 export default World;

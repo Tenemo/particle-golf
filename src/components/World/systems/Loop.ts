@@ -3,6 +3,7 @@ import { PerspectiveCamera, Scene, WebGLRenderer, Clock } from 'three';
 import { AnimatedMesh, DampenedControls } from '../types';
 
 const animationClock = new Clock();
+const globalClock = new Clock();
 let isStopped = false;
 
 export class Loop {
@@ -54,6 +55,7 @@ export class Loop {
     }
 
     globalTick(): void {
-        this.controls.tick();
+        const delta = globalClock.getDelta();
+        this.controls.tick(delta);
     }
 }
