@@ -12,20 +12,29 @@ const HomePage = (): ReactElement => {
     useEffect(() => {
         const container = (sceneContainer.current as unknown) as HTMLScriptElement;
         world = new World(container);
-        world.render();
+        world.start();
     }, []);
 
     return (
         <main className={styles.homePage}>
-            <button
-                onClick={() => {
-                    world.removeCube();
-                    world.render();
-                }}
-                type="button"
-            >
-                Do something
-            </button>
+            <div className={styles.controls}>
+                <button
+                    onClick={() => {
+                        world.start();
+                    }}
+                    type="button"
+                >
+                    Start
+                </button>
+                <button
+                    onClick={() => {
+                        world.stop();
+                    }}
+                    type="button"
+                >
+                    Stop
+                </button>
+            </div>
             <div ref={sceneContainer} className={styles.sceneContainer} />
         </main>
     );
