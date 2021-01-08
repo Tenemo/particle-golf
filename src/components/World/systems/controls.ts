@@ -35,7 +35,7 @@ export const createControls = (
                 controls.enableDamping = true;
                 return;
             }
-            const steps = 500 / delta;
+            const steps = 333 / delta;
 
             positionDistance = positionTarget.distanceTo(camera.position);
             targetDistance = targetTarget.distanceTo(controls.target);
@@ -52,8 +52,6 @@ export const createControls = (
                     targetTarget.y,
                     targetTarget.z,
                 );
-                camera.position.set(1, 1, 20);
-                controls.target.set(0, 0, 0);
             } else {
                 currentStep += 1;
                 camera.position.setX(

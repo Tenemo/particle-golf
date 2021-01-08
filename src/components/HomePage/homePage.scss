@@ -11,7 +11,10 @@
     background-color: #eee;
 }
 .controls {
-    margin: 0 0 0 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 40px 0 0 20px;
     display: flex;
     > button {
         margin-right: 10px;

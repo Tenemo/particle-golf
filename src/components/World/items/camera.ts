@@ -7,7 +7,7 @@ export const createCamera = (): PerspectiveCamera => {
         0.1, // near clipping plane
         5000, // far clipping plane
     );
-    camera.position.set(1, 1, 20);
+    camera.position.set(5, 5, 20);
 
     return camera;
 };

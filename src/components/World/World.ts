@@ -41,13 +41,13 @@ class World {
 
         cube = createCube();
 
-        const light = createLights();
+        const { ambientLight, mainLight } = createLights();
 
         loop.updatables.push(cube);
 
         const axesHelper = new AxesHelper(500);
 
-        scene.add(cube, light, axesHelper);
+        scene.add(cube, ambientLight, mainLight, axesHelper);
 
         // eslint-disable-next-line
         new Resizer(sceneContainer, camera, renderer);
@@ -62,7 +62,7 @@ class World {
     };
 
     returnToOrigin = (): void => {
-        controls.moveCamera(new Vector3(1, 1, 20), new Vector3(0, 0, 0));
+        controls.moveCamera(new Vector3(5, 5, 20), new Vector3(0, 0, 0));
     };
 }
 
