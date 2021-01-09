@@ -5,7 +5,7 @@ import React, {
     useState,
     useCallback,
 } from 'react';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Icon, Checkbox } from 'semantic-ui-react';
 
 import World from 'components/World';
 import ParticlesList from './ParticlesList';
@@ -22,6 +22,9 @@ const HomePage = (): ReactElement => {
     const [isRunning, setIsRunning] = useState(false);
     const [isAddParticleVisible, setIsAddParticleVisible] = useState(false);
     const [isParticlesListVisible, setIsParticlesListVisible] = useState(true);
+    const [isTrailsVisible, setIsTrailsVisible] = useState(true);
+    const [isAllTagsVisible, setIsAllTagsVisible] = useState(false);
+    const [isSpeedVectorsVisible, setIsSpeedVectorsVisible] = useState(false);
     const [particles, setParticles] = useState(initialState);
 
     useEffect(() => {
@@ -61,50 +64,83 @@ const HomePage = (): ReactElement => {
         <main className={styles.homePage}>
             {isAddParticleVisible && isParticlesListVisible && true}
             <div className={styles.controls}>
-                {isRunning ? (
+                <div>
+                    {isRunning ? (
+                        <Button
+                            className={styles.pausePlayButton}
+                            onClick={() => {
+                                world.stop();
+                                setIsRunning(false);
+                            }}
+                            secondary
+                        >
+                            <Icon name="pause" /> Pause
+                        </Button>
+                    ) : (
+                        <Button
+                            className={styles.pausePlayButton}
+                            onClick={() => {
+                                world.start();
+                                setIsRunning(true);
+                            }}
+                            primary
+                        >
+                            <Icon name="play" /> Resume
+                        </Button>
+                    )}
                     <Button
-                        className={styles.pausePlayButton}
                         onClick={() => {
-                            world.stop();
-                            setIsRunning(false);
+                            world.returnToOrigin();
                         }}
                         secondary
                     >
-                        <Icon name="pause" /> Pause
+                        Return to (0,0,0)
                     </Button>
-                ) : (
                     <Button
-                        className={styles.pausePlayButton}
                         onClick={() => {
-                            world.start();
-                            setIsRunning(true);
+                            setIsAddParticleVisible(true);
+                            addParticle();
                         }}
                         primary
                     >
-                        <Icon name="play" /> Resume
+                        Add particle
                     </Button>
-                )}
-                <Button
-                    onClick={() => {
-                        world.returnToOrigin();
-                    }}
-                    secondary
-                >
-                    Return to (0,0,0)
-                </Button>
-                <Button
-                    onClick={() => {
-                        setIsAddParticleVisible(true);
-                        addParticle();
-                    }}
-                    primary
-                >
-                    Add particle
-                </Button>
+                </div>
+                <div className={styles.toggles}>
+                    <Checkbox
+                        checked={isTrailsVisible}
+                        label="Show trajectories"
+                        onChange={() => {
+                            setIsTrailsVisible(!isTrailsVisible);
+                            world.setIsTrailsVisible(!isTrailsVisible);
+                        }}
+                        toggle
+                    />
+                    <Checkbox
+                        checked={isAllTagsVisible}
+                        label="Show all tags"
+                        onChange={() => {
+                            setIsAllTagsVisible(!isAllTagsVisible);
+                        }}
+                        toggle
+                    />
+                    <Checkbox
+                        checked={isSpeedVectorsVisible}
+                        label="Show velocity vectors"
+                        onChange={() => {
+                            setIsSpeedVectorsVisible(!isSpeedVectorsVisible);
+                            world.setIsVelocityVectorsVisible(
+                                !isSpeedVectorsVisible,
+                            );
+                        }}
+                        toggle
+                    />
+                </div>
             </div>
             <ParticlesList
                 deleteParticle={deleteParticle}
                 goToParticle={goToParticle}
+                isAllTagsVisible={isAllTagsVisible}
                 isParticlesListVisible={isParticlesListVisible}
                 particles={particles}
                 setIsParticlesListVisible={setIsParticlesListVisible}

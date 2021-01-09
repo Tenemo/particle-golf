@@ -9,13 +9,29 @@ import {
     Line,
     Vector3,
     Group,
+    ArrowHelper,
 } from 'three';
 
 import { AnimatedParticle } from '../types';
 
-let particleNameIndex = 1;
+let particleIndex = 1;
 
-export const createParticle = (trajectoryGroup: Group): AnimatedParticle => {
+const colors = [
+    '#3352FF', // blue
+    '#F33724', // orange-ish
+    '#067220', // dark green
+    '#860684', // purple
+    '#0FD3D3', // teal
+    '#EE8714', // orange
+    '#830000', // dark red
+    '#464646', // gray
+];
+
+export const createParticle = (
+    trajectoryGroup: Group,
+    isVelocityVectorsVisible: boolean,
+): AnimatedParticle => {
+    const color = colors[particleIndex % colors.length];
     const geometry = new SphereBufferGeometry(0, 0, 0);
     const material = new ShaderMaterial({
         transparent: true,
@@ -23,7 +39,7 @@ export const createParticle = (trajectoryGroup: Group): AnimatedParticle => {
         uniforms: {
             size: { value: 10 },
             scale: { value: 1 },
-            color: { value: new Color('#333') },
+            color: { value: new Color(color) },
         },
         vertexShader: ShaderLib.points.vertexShader,
         fragmentShader: `
@@ -41,7 +57,8 @@ export const createParticle = (trajectoryGroup: Group): AnimatedParticle => {
         material,
     ) as unknown) as AnimatedParticle;
 
-    particle.name = `Particle ${particleNameIndex}`;
+    particle.name = `Particle ${particleIndex}`;
+    particle.color = color;
 
     particle.position.z += Math.random() * 10;
     particle.position.x += Math.random() * 10;
@@ -50,8 +67,7 @@ export const createParticle = (trajectoryGroup: Group): AnimatedParticle => {
     const metersPerSecond = 0.3;
 
     const lineMaterial = new LineBasicMaterial({
-        color: 0x0000ff,
-        // color: new Color('black'),
+        color: new Color(color),
     });
 
     let trajectoryLimiterCount = 0;
@@ -61,12 +77,22 @@ export const createParticle = (trajectoryGroup: Group): AnimatedParticle => {
         particle.position.z,
     );
     const particleTrajectoryGroup = new Group();
-    particleTrajectoryGroup.name = `Particle ${particleNameIndex} trajectory`;
+    particleTrajectoryGroup.name = `Particle ${particleIndex} trajectory`;
     trajectoryGroup.add(particleTrajectoryGroup);
 
-    particleNameIndex += 1;
+    particleIndex += 1;
 
     particle.isHovered = false;
+
+    const velocityArrow = new ArrowHelper(
+        new Vector3(0, 0, 0),
+        new Vector3(0, 0, 0),
+        0,
+        new Color(color),
+    );
+    velocityArrow.name = `Particle ${particleIndex} velocity`;
+    velocityArrow.visible = isVelocityVectorsVisible;
+    particle.add(velocityArrow);
 
     particle.tick = (delta: number, isStopping?: boolean) => {
         particle.position.x += metersPerSecond * delta;
@@ -75,19 +101,30 @@ export const createParticle = (trajectoryGroup: Group): AnimatedParticle => {
             particle.position.y,
             particle.position.z,
         );
-        if (trajectoryLimiterCount === 50 || isStopping) {
+        if (trajectoryLimiterCount % 50 === 0 || isStopping) {
             const lineGeometry = new BufferGeometry().setFromPoints([
                 previousPosition,
                 newPosition,
             ]);
             const line = new Line(lineGeometry, lineMaterial);
             particleTrajectoryGroup.add(line);
+        }
+        if (trajectoryLimiterCount % 50 === 0) {
+            const direction = new Vector3();
+            direction
+                .subVectors(previousPosition, newPosition)
+                .normalize()
+                .negate();
+            const speed = parseFloat(
+                previousPosition.distanceTo(newPosition).toFixed(1),
+            );
+            velocityArrow.setLength(speed * 30);
+            velocityArrow.setDirection(direction);
             previousPosition = new Vector3(
                 particle.position.x,
                 particle.position.y,
                 particle.position.z,
             );
-            trajectoryLimiterCount = 0;
         }
         trajectoryLimiterCount += 1;
     };

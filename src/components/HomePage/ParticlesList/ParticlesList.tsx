@@ -12,12 +12,14 @@ const ParticlesList = ({
     particles,
     goToParticle,
     deleteParticle,
+    isAllTagsVisible,
 }: {
     isParticlesListVisible: boolean;
     setIsParticlesListVisible: (isVisible: boolean) => void;
     particles: AnimatedParticle[];
     goToParticle: (particleName: string) => void;
     deleteParticle: (particleName: string) => void;
+    isAllTagsVisible: boolean;
 }): ReactElement => {
     return (
         <section
@@ -32,7 +34,9 @@ const ParticlesList = ({
                     return (
                         <div key={name} className={styles.particle}>
                             <div className={styles.particleHeading}>
-                                <h3>{name}</h3>
+                                <h3 style={{ color: particle.color }}>
+                                    {name}
+                                </h3>
                                 <Popup
                                     content={`Go to ${name}`}
                                     position="right center"
@@ -79,7 +83,10 @@ const ParticlesList = ({
                                     }
                                 />
                             </div>
-                            <ParticlePosition particle={particle} />
+                            <ParticlePosition
+                                isAllTagsVisible={isAllTagsVisible}
+                                particle={particle}
+                            />
                         </div>
                     );
                 })}

@@ -7,6 +7,7 @@ export type AnimatedParticle = Points & {
     isHovered: boolean;
     screenPositionX?: number;
     screenPositionY?: number;
+    color: string;
 };
 
 export type DampenedControls = OrbitControls & {

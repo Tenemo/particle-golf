@@ -6,6 +6,7 @@ declare namespace HomePageScssNamespace {
     homePage: string;
     pausePlayButton: string;
     sceneContainer: string;
+    toggles: string;
   }
 }
 

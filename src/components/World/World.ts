@@ -27,6 +27,7 @@ let loop: Loop;
 let controls: DampenedControls;
 let particleGroup: Group;
 let trajectoryGroup: Group;
+let isVelocityVectorsVisible = false;
 
 class World {
     constructor(container: HTMLScriptElement) {
@@ -88,7 +89,10 @@ class World {
     };
 
     addParticle = (): AnimatedParticle => {
-        const particle = createParticle(trajectoryGroup);
+        const particle = createParticle(
+            trajectoryGroup,
+            isVelocityVectorsVisible,
+        );
         particleGroup.add(particle);
         loop.updatables.push(particle);
         return particle;
@@ -126,6 +130,22 @@ class World {
         );
         screenPosition.z = 0;
         return screenPosition;
+    };
+
+    setIsTrailsVisible = (isVisible: boolean): void => {
+        trajectoryGroup.visible = isVisible;
+    };
+
+    setIsVelocityVectorsVisible = (isVisible: boolean): void => {
+        particleGroup.children.forEach((particle) => {
+            particle.children.forEach((child) => {
+                if (child.name.includes('velocity')) {
+                    // eslint-disable-next-line no-param-reassign
+                    child.visible = isVisible;
+                }
+            });
+        });
+        isVelocityVectorsVisible = isVisible;
     };
 }
 

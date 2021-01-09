@@ -6,8 +6,6 @@ import {
     Raycaster,
     Vector2,
     Group,
-    Color,
-    ShaderMaterial,
     Vector3,
 } from 'three';
 
@@ -99,24 +97,20 @@ export class Loop {
             this.particleGroup.children,
         );
         for (let i = 0; i < this.particleGroup.children.length; i += 1) {
-            (this.particleGroup.children[
-                i
-            ] as AnimatedParticle).isHovered = false;
+            const particle = this.particleGroup.children[i] as AnimatedParticle;
+            const {
+                x: screenPositionX,
+                y: screenPositionY,
+            } = this.toScreenPosition(particle);
+            particle.screenPositionX = screenPositionX;
+            particle.screenPositionY = screenPositionY;
+            particle.isHovered = false;
         }
         for (let i = 0; i < intersects.length; i += 1) {
             const intersectedParticle = intersects[i]
                 .object as AnimatedParticle;
-            if ((intersects[i].distanceToRay ?? 1) < 0.2) {
-                (intersectedParticle.material as ShaderMaterial).uniforms.color.value = new Color(
-                    '#ff0000',
-                );
-                const {
-                    x: screenPositionX,
-                    y: screenPositionY,
-                } = this.toScreenPosition(intersectedParticle);
+            if ((intersects[i].distanceToRay ?? 1) < 0.3) {
                 intersectedParticle.isHovered = true;
-                intersectedParticle.screenPositionX = screenPositionX;
-                intersectedParticle.screenPositionY = screenPositionY;
             }
         }
         this.controls.tick(delta);

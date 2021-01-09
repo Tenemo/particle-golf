@@ -4,8 +4,10 @@ import { AnimatedParticle } from '../../World/types';
 
 const ParticlePosition = ({
     particle: { name, position, isHovered, screenPositionX, screenPositionY },
+    isAllTagsVisible,
 }: {
     particle: AnimatedParticle;
+    isAllTagsVisible: boolean;
 }): ReactElement => {
     const [statePosition, updatePosition] = useState({
         ...position,
@@ -22,18 +24,17 @@ const ParticlePosition = ({
         <>
             <div>
                 x: {x.toFixed(2)} y: {y.toFixed(2)} z: {z.toFixed(2)}
-                {JSON.stringify(isHovered)}
             </div>
-            {isHovered && (
+            {(isHovered || isAllTagsVisible) && (
                 <div
                     style={{
                         position: 'fixed',
-                        top: (screenPositionY as number) - 28,
-                        left: screenPositionX,
+                        top: (screenPositionY as number) - 42,
+                        left: (screenPositionX as number) + 7,
                     }}
                 >
-                    {name}, x: {x.toFixed(2)} y: {y.toFixed(2)} z:{' '}
-                    {z.toFixed(2)}
+                    {name}
+                    <br /> x: {x.toFixed(2)} y: {y.toFixed(2)} z: {z.toFixed(2)}
                 </div>
             )}
         </>
