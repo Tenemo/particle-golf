@@ -5,9 +5,9 @@ export const createCamera = (): PerspectiveCamera => {
         60, // fov = Field Of View
         1, // aspect ratio (dummy value)
         0.1, // near clipping plane
-        5000, // far clipping plane
+        50000, // far clipping plane
     );
-    camera.position.set(5, 5, 20);
+    camera.position.set(5, 5, 30);
 
     return camera;
 };

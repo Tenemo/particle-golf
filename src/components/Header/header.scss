@@ -1,9 +1,13 @@
 .header {
+    z-index: 10;
     position: absolute;
     top: 0;
     left: 0;
     h1 {
         margin: 10px 0 5px 20px;
         font-size: 1.4em;
+        a {
+            color: inherit;
+        }
     }
 }

@@ -1,4 +1,8 @@
 import webpack, { Configuration } from 'webpack';
+import path from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: path.join(process.cwd(), '.env') });
 
 export const commonConfig: Configuration = {
     target: `web`,
@@ -8,6 +12,7 @@ export const commonConfig: Configuration = {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV),
                 PORT: JSON.stringify(process.env.PORT),
                 ANALYZE: JSON.stringify(process.env.ANALYZE),
+                SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN),
             },
         }),
     ],

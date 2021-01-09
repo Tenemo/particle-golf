@@ -14,3 +14,4 @@
 -   Webpack 5
 -   Babel 7
 -   ESLint + Stylelint + Prettier, on top of customized VSCode workspace
+-   sentry.io error and performance tracing

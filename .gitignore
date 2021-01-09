@@ -8,6 +8,7 @@ debug.log
 
 # Build
 dist/
+.env
 
 # Testing
 coverage/

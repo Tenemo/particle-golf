@@ -47,6 +47,8 @@
     },
     "dependencies": {
         "@babel/runtime-corejs3": "^7.12.5",
+        "@sentry/react": "^5.29.2",
+        "@sentry/tracing": "^5.29.2",
         "axios": "^0.21.1",
         "connected-react-router": "^6.8.0",
         "core-js": "^3.8.2",
@@ -64,6 +66,8 @@
         "redux": "^4.0.5",
         "redux-thunk": "^2.3.0",
         "reselect": "^4.0.0",
+        "semantic-ui-css": "^2.4.1",
+        "semantic-ui-react": "^2.0.1",
         "three": "^0.124.0"
     },
     "devDependencies": {
@@ -81,6 +85,7 @@
         "@types/circular-dependency-plugin": "^5.0.1",
         "@types/core-js": "^2.5.4",
         "@types/css-minimizer-webpack-plugin": "^1.1.1",
+        "@types/dotenv": "^8.2.0",
         "@types/enzyme": "^3.10.8",
         "@types/enzyme-adapter-react-16": "^1.0.6",
         "@types/enzyme-to-json": "^1.5.4",
@@ -131,6 +136,7 @@
         "cross-env": "^7.0.3",
         "css-loader": "^5.0.1",
         "css-minimizer-webpack-plugin": "^1.1.5",
+        "dotenv": "^8.2.0",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-16": "^1.15.5",
         "enzyme-to-json": "^3.6.1",

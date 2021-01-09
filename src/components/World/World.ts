@@ -4,6 +4,7 @@ import {
     WebGLRenderer,
     AxesHelper,
     Vector3,
+    Group,
 } from 'three';
 
 import { createCamera } from './items/camera';
@@ -15,6 +16,7 @@ import { createRenderer } from './systems/renderer';
 import { Resizer } from './systems/Resizer';
 import { createControls } from './systems/controls';
 import { Loop } from './systems/Loop';
+import { createParticle } from './items/particle';
 
 import { AnimatedMesh, DampenedControls } from './types';
 
@@ -25,6 +27,7 @@ let cube: AnimatedMesh;
 let sceneContainer: HTMLScriptElement;
 let loop: Loop;
 let controls: DampenedControls;
+let particleGroup: Group;
 
 class World {
     constructor(container: HTMLScriptElement) {
@@ -47,7 +50,9 @@ class World {
 
         const axesHelper = new AxesHelper(500);
 
-        scene.add(cube, ambientLight, mainLight, axesHelper);
+        particleGroup = new Group();
+
+        scene.add(cube, particleGroup, ambientLight, mainLight, axesHelper);
 
         // eslint-disable-next-line
         new Resizer(sceneContainer, camera, renderer);
@@ -62,7 +67,11 @@ class World {
     };
 
     returnToOrigin = (): void => {
-        controls.moveCamera(new Vector3(5, 5, 20), new Vector3(0, 0, 0));
+        controls.moveCamera(new Vector3(5, 5, 30), new Vector3(0, 0, 0));
+    };
+
+    addParticle = (): void => {
+        particleGroup.add(createParticle());
     };
 }
 

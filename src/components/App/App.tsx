@@ -2,9 +2,7 @@ import React, { Component, ReactElement } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import 'normalize.css';
 import { Helmet } from 'react-helmet-async';
-
-import 'fonts/RobotoMono-Regular.woff2';
-import 'fonts/RobotoMono-Regular.woff';
+import 'semantic-ui-css/semantic.css';
 
 import NotFound from 'components/NotFound';
 import Header from 'components/Header';

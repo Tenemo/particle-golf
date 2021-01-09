@@ -1,10 +1,4 @@
 .app {
-    @font-face {
-        font-family: "Roboto Mono";
-        src: url("../../fonts/RobotoMono-Regular.woff2") format("woff2"),
-            url("../../fonts/RobotoMono-Regular.woff") format("woff");
-    }
-    font-family: "Roboto Mono", "Courier New", "Courier", monospace;
     height: 100%;
     color: #111;
     background-color: #eee;

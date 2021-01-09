@@ -4,6 +4,7 @@ declare namespace HomePageScssNamespace {
   export interface IHomePageScss {
     controls: string;
     homePage: string;
+    pausePlayButton: string;
     sceneContainer: string;
   }
 }
