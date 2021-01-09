@@ -1,7 +1,46 @@
 import React, { ReactElement } from 'react';
+import { Modal, Button } from 'semantic-ui-react';
 
-const AddParticle = (): ReactElement => {
-    return <div>Add particle</div>;
+const AddParticle = ({
+    setIsAddParticleVisible,
+}: {
+    setIsAddParticleVisible: (isVisible: boolean) => void;
+}): ReactElement => {
+    return (
+        <Modal
+            onClose={() => {
+                setIsAddParticleVisible(false);
+            }}
+            open
+        >
+            <Modal.Header>Add a custom particle</Modal.Header>
+            <Modal.Content>
+                <Modal.Description>
+                    <p>Custom function:</p>
+                </Modal.Description>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button
+                    onClick={() => {
+                        setIsAddParticleVisible(false);
+                    }}
+                    secondary
+                >
+                    Cancel
+                </Button>
+                <Button
+                    content="Add"
+                    disabled
+                    icon="plus"
+                    labelPosition="right"
+                    onClick={() => {
+                        setIsAddParticleVisible(false);
+                    }}
+                    positive
+                />
+            </Modal.Actions>
+        </Modal>
+    );
 };
 
 export default AddParticle;
