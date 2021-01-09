@@ -3,11 +3,18 @@
     position: absolute;
     top: 0;
     left: 0;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
     h1 {
         margin: 10px 0 5px 20px;
-        font-size: 1.4em;
+        font-size: 1.5em;
         a {
             color: inherit;
         }
     }
+}
+.fpsCounter {
+    margin-right: 20px;
 }

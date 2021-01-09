@@ -1,10 +1,11 @@
 import { PerspectiveCamera, Scene, WebGLRenderer, Clock } from 'three';
 
-import { AnimatedMesh, DampenedControls } from '../types';
+import { AnimatedParticle, DampenedControls } from '../types';
 
 const animationClock = new Clock();
 const globalClock = new Clock();
 let isStopped = false;
+let fpsDelay = 0;
 
 export class Loop {
     camera: PerspectiveCamera;
@@ -15,7 +16,7 @@ export class Loop {
 
     controls: DampenedControls;
 
-    updatables: AnimatedMesh[];
+    updatables: AnimatedParticle[];
 
     constructor(
         camera: PerspectiveCamera,
@@ -43,19 +44,28 @@ export class Loop {
             this.globalTick();
             this.renderer.render(this.scene, this.camera);
         });
+        this.tick(true);
         isStopped = true;
     }
 
-    tick(): void {
+    tick(isStopping?: boolean): void {
         const delta = animationClock.getDelta();
         this.updatables.forEach((updatableObject) => {
-            updatableObject.tick(isStopped ? 0 : delta);
+            updatableObject.tick(isStopped ? 0 : delta, isStopping);
         });
         isStopped = false;
     }
 
     globalTick(): void {
         const delta = globalClock.getDelta();
+        if (fpsDelay === 10) {
+            const fps = 1 / delta;
+            (document.querySelector(
+                '#fpsCounter',
+            ) as HTMLScriptElement).textContent = `${fps.toFixed(0)} fps`;
+            fpsDelay = 0;
+        }
+        fpsDelay += 1;
         this.controls.tick(delta);
     }
 }

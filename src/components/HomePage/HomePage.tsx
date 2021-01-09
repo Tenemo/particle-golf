@@ -2,16 +2,21 @@ import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 
 import World from 'components/World';
+import ParticlesList from './ParticlesList';
 
 import styles from './homePage.scss';
+import { AnimatedParticle } from '../World/types';
 
 let world: World;
+
+const initialState: AnimatedParticle[] = [];
 
 const HomePage = (): ReactElement => {
     const sceneContainer = useRef(null);
     const [isRunning, setIsRunning] = useState(false);
     const [isAddParticleVisible, setIsAddParticleVisible] = useState(false);
-    const [isParticlesListVisible, setIsParticlesListVisible] = useState(false);
+    const [isParticlesListVisible, setIsParticlesListVisible] = useState(true);
+    const [particles, setParticles] = useState(initialState);
 
     useEffect(() => {
         const container = (sceneContainer.current as unknown) as HTMLScriptElement;
@@ -19,6 +24,16 @@ const HomePage = (): ReactElement => {
         world.start();
         setIsRunning(true);
     }, []);
+
+    const goToParticle = (particleName: string): void => {
+        const {
+            position: { x, y, z },
+        } = particles.find(
+            ({ name }) => name === particleName,
+        ) as AnimatedParticle;
+        world.goToCoords(x, y, z);
+        setIsRunning(false);
+    };
 
     return (
         <main className={styles.homePage}>
@@ -57,35 +72,21 @@ const HomePage = (): ReactElement => {
                 </Button>
                 <Button
                     onClick={() => {
-                        setIsParticlesListVisible(true);
-                    }}
-                    secondary
-                >
-                    List of particles
-                </Button>
-                <Button
-                    onClick={() => {
                         setIsAddParticleVisible(true);
-                        world.addParticle();
+                        const particle = world.addParticle();
+                        setParticles([...particles, particle]);
                     }}
                     primary
                 >
                     Add particle
                 </Button>
-                <Button
-                    onClick={() => {
-                        const whatever = 2;
-                        /* eslint-disable */
-                        // @ts-ignore
-                        whatever = 3;
-                        console.log(whatever);
-                        /* eslint-enable */
-                    }}
-                    primary
-                >
-                    throw error
-                </Button>
             </div>
+            <ParticlesList
+                goToParticle={goToParticle}
+                isParticlesListVisible={isParticlesListVisible}
+                particles={particles}
+                setIsParticlesListVisible={setIsParticlesListVisible}
+            />
             <div ref={sceneContainer} className={styles.sceneContainer} />
         </main>
     );

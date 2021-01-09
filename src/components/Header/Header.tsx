@@ -9,6 +9,7 @@ const Header = (): ReactElement => {
             <h1>
                 <Link to="/">Particle Golf</Link>
             </h1>
+            <div className={styles.fpsCounter} id="fpsCounter" />
         </header>
     );
 };

@@ -8,7 +8,6 @@ import {
 } from 'three';
 
 import { createCamera } from './items/camera';
-import { createCube } from './items/cube';
 import { createScene } from './items/scene';
 import { createLights } from './items/lights';
 
@@ -18,16 +17,16 @@ import { createControls } from './systems/controls';
 import { Loop } from './systems/Loop';
 import { createParticle } from './items/particle';
 
-import { AnimatedMesh, DampenedControls } from './types';
+import { AnimatedParticle, DampenedControls } from './types';
 
 let camera: PerspectiveCamera;
 let renderer: WebGLRenderer;
 let scene: Scene;
-let cube: AnimatedMesh;
 let sceneContainer: HTMLScriptElement;
 let loop: Loop;
 let controls: DampenedControls;
 let particleGroup: Group;
+let trajectoryGroup: Group;
 
 class World {
     constructor(container: HTMLScriptElement) {
@@ -42,17 +41,20 @@ class World {
 
         loop = new Loop(camera, scene, renderer, controls);
 
-        cube = createCube();
-
         const { ambientLight, mainLight } = createLights();
-
-        loop.updatables.push(cube);
 
         const axesHelper = new AxesHelper(500);
 
         particleGroup = new Group();
+        trajectoryGroup = new Group();
 
-        scene.add(cube, particleGroup, ambientLight, mainLight, axesHelper);
+        scene.add(
+            particleGroup,
+            trajectoryGroup,
+            ambientLight,
+            mainLight,
+            axesHelper,
+        );
 
         // eslint-disable-next-line
         new Resizer(sceneContainer, camera, renderer);
@@ -70,8 +72,19 @@ class World {
         controls.moveCamera(new Vector3(5, 5, 30), new Vector3(0, 0, 0));
     };
 
-    addParticle = (): void => {
-        particleGroup.add(createParticle());
+    goToCoords = (x: number, y: number, z: number): void => {
+        this.stop();
+        controls.moveCamera(
+            new Vector3(x + 5, y + 5, z + 10),
+            new Vector3(x, y, z),
+        );
+    };
+
+    addParticle = (): AnimatedParticle => {
+        const particle = createParticle(trajectoryGroup);
+        particleGroup.add(particle);
+        loop.updatables.push(particle);
+        return particle;
     };
 }
 

@@ -17,25 +17,32 @@ export const createControls = (
 ): DampenedControls => {
     const controls = new OrbitControls(camera, canvas) as DampenedControls;
 
-    // controls.enablePan = false;
     controls.enableDamping = true;
+    controls.enableKeys = true;
+    controls.keyPanSpeed = 50;
 
     controls.tick = (delta) => {
         if (isCameraMoving) {
             if (
-                positionTarget.x === roundToPrecision(camera.position.x) &&
-                positionTarget.y === roundToPrecision(camera.position.y) &&
-                positionTarget.z === roundToPrecision(camera.position.z) &&
-                targetTarget.x === roundToPrecision(controls.target.x) &&
-                targetTarget.y === roundToPrecision(controls.target.y) &&
-                targetTarget.z === roundToPrecision(controls.target.z)
+                roundToPrecision(positionTarget.x) ===
+                    roundToPrecision(camera.position.x) &&
+                roundToPrecision(positionTarget.y) ===
+                    roundToPrecision(camera.position.y) &&
+                roundToPrecision(positionTarget.z) ===
+                    roundToPrecision(camera.position.z) &&
+                roundToPrecision(targetTarget.x) ===
+                    roundToPrecision(controls.target.x) &&
+                roundToPrecision(targetTarget.y) ===
+                    roundToPrecision(controls.target.y) &&
+                roundToPrecision(targetTarget.z) ===
+                    roundToPrecision(controls.target.z)
             ) {
                 isCameraMoving = false;
                 controls.enabled = true;
                 controls.enableDamping = true;
                 return;
             }
-            const steps = 333 / delta;
+            const steps = 80 / delta;
 
             positionDistance = positionTarget.distanceTo(camera.position);
             targetDistance = targetTarget.distanceTo(controls.target);
@@ -43,14 +50,14 @@ export const createControls = (
             if (positionDistance < 0.01 || targetDistance < 0.01) {
                 controls.enableDamping = false;
                 camera.position.set(
-                    positionTarget.x,
-                    positionTarget.y,
-                    positionTarget.z,
+                    roundToPrecision(positionTarget.x),
+                    roundToPrecision(positionTarget.y),
+                    roundToPrecision(positionTarget.z),
                 );
                 controls.target.set(
-                    targetTarget.x,
-                    targetTarget.y,
-                    targetTarget.z,
+                    roundToPrecision(targetTarget.x),
+                    roundToPrecision(targetTarget.y),
+                    roundToPrecision(targetTarget.z),
                 );
             } else {
                 currentStep += 1;

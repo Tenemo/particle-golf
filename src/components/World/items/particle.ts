@@ -1,12 +1,21 @@
 import {
     Points,
     SphereBufferGeometry,
+    BufferGeometry,
     ShaderMaterial,
     Color,
     ShaderLib,
+    LineBasicMaterial,
+    Line,
+    Vector3,
+    Group,
 } from 'three';
 
-export const createParticle = (): Points => {
+import { AnimatedParticle } from '../types';
+
+let particleNameIndex = 1;
+
+export const createParticle = (trajectoryGroup: Group): AnimatedParticle => {
     const geometry = new SphereBufferGeometry(0, 0, 0);
     const material = new ShaderMaterial({
         transparent: true,
@@ -27,10 +36,55 @@ export const createParticle = (): Points => {
         `,
     });
 
-    const particle = new Points(geometry, material);
+    const particle = (new Points(
+        geometry,
+        material,
+    ) as unknown) as AnimatedParticle;
+
+    particle.name = `Particle ${particleNameIndex}`;
+    particleNameIndex += 1;
+
     particle.position.z += Math.random() * 10;
     particle.position.x += Math.random() * 10;
     particle.position.y += Math.random() * 10;
+
+    const metersPerSecond = 0.3;
+
+    const lineMaterial = new LineBasicMaterial({
+        color: 0x0000ff,
+        // color: new Color('black'),
+    });
+
+    let trajectoryLimiterCount = 0;
+    let previousPosition = new Vector3(
+        particle.position.x,
+        particle.position.y,
+        particle.position.z,
+    );
+
+    particle.tick = (delta: number, isStopping?: boolean) => {
+        particle.position.x += metersPerSecond * delta;
+        const newPosition = new Vector3(
+            particle.position.x,
+            particle.position.y,
+            particle.position.z,
+        );
+        if (trajectoryLimiterCount === 50 || isStopping) {
+            const lineGeometry = new BufferGeometry().setFromPoints([
+                previousPosition,
+                newPosition,
+            ]);
+            const line = new Line(lineGeometry, lineMaterial);
+            trajectoryGroup.add(line);
+            previousPosition = new Vector3(
+                particle.position.x,
+                particle.position.y,
+                particle.position.z,
+            );
+            trajectoryLimiterCount = 0;
+        }
+        trajectoryLimiterCount += 1;
+    };
 
     return particle;
 };
