@@ -94,10 +94,12 @@ const HomePage = (): ReactElement => {
     );
 
     return (
-        <main className={styles.homePage}>
+        <main
+            className={`${styles.homePage} ${isMobile ? styles.isMobile : ''}`}
+        >
             {isAddParticleVisible && isParticlesListVisible && true}
             <div className={styles.controls}>
-                <div>
+                <div className={styles.buttons}>
                     {isRunning ? (
                         <Button
                             className={styles.pausePlayButton}
@@ -107,7 +109,8 @@ const HomePage = (): ReactElement => {
                                 setIsRunning(false);
                             }}
                         >
-                            <Icon name="pause" /> Pause
+                            <Icon name="pause" />
+                            &nbsp;Pause
                         </Button>
                     ) : (
                         <Button
@@ -118,7 +121,8 @@ const HomePage = (): ReactElement => {
                             }}
                             primary
                         >
-                            <Icon name="play" /> Resume
+                            <Icon name="play" />
+                            &nbsp;Resume
                         </Button>
                     )}
                     <Button

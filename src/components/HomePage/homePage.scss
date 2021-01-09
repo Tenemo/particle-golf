@@ -17,7 +17,7 @@
     margin: 45px 0 0 20px;
     display: flex;
     flex-direction: column;
-    > button {
+    button {
         margin-right: 10px;
     }
 }
@@ -26,6 +26,11 @@
     flex-direction: column;
     > * {
         margin-top: 10px;
+    }
+}
+.isMobile .controls .buttons {
+    > * {
+        margin-bottom: 5px;
     }
 }
 

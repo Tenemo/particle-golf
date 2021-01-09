@@ -121,7 +121,7 @@ export const createParticle = (
             const speed = parseFloat(
                 previousPosition.distanceTo(newPosition).toFixed(1),
             );
-            velocityArrow.setLength(speed * (isMobile ? 40 : 20));
+            velocityArrow.setLength(speed * (isMobile ? 10 : 20));
             velocityArrow.setDirection(direction);
             previousPosition = new Vector3(
                 particle.position.x,

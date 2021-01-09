@@ -23,7 +23,7 @@ const ParticlePosition = ({
     useEffect(() => {
         const interval = setInterval(() => {
             updatePosition({ ...position, isHovered });
-        }, 50);
+        }, 25);
         return () => clearInterval(interval);
     }, [isHovered, position]);
     const { x, y, z } = statePosition;
