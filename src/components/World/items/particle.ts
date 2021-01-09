@@ -42,7 +42,6 @@ export const createParticle = (trajectoryGroup: Group): AnimatedParticle => {
     ) as unknown) as AnimatedParticle;
 
     particle.name = `Particle ${particleNameIndex}`;
-    particleNameIndex += 1;
 
     particle.position.z += Math.random() * 10;
     particle.position.x += Math.random() * 10;
@@ -61,6 +60,11 @@ export const createParticle = (trajectoryGroup: Group): AnimatedParticle => {
         particle.position.y,
         particle.position.z,
     );
+    const particleTrajectoryGroup = new Group();
+    particleTrajectoryGroup.name = `Particle ${particleNameIndex} trajectory`;
+    trajectoryGroup.add(particleTrajectoryGroup);
+
+    particleNameIndex += 1;
 
     particle.tick = (delta: number, isStopping?: boolean) => {
         particle.position.x += metersPerSecond * delta;
@@ -75,7 +79,7 @@ export const createParticle = (trajectoryGroup: Group): AnimatedParticle => {
                 newPosition,
             ]);
             const line = new Line(lineGeometry, lineMaterial);
-            trajectoryGroup.add(line);
+            particleTrajectoryGroup.add(line);
             previousPosition = new Vector3(
                 particle.position.x,
                 particle.position.y,

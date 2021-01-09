@@ -26,6 +26,8 @@
     }
 }
 .list {
+    padding-right: 20px;
+    width: 230px;
     h2 {
         background: #eee;
         position: sticky;
@@ -33,18 +35,22 @@
         padding: 10px 0 5px 20px;
         font-size: 1.3em;
     }
-    padding-right: 20px;
-    width: 230px;
+}
+.particleHeading {
+    display: flex;
+    align-items: center;
+    margin: 3 0;
+    h3 {
+        margin: 0;
+        font-size: 1.1em;
+        margin-right: 10px;
+    }
+    i {
+        cursor: pointer;
+        margin-right: 10px;
+    }
 }
 .particle {
-    cursor: pointer;
-    &:hover {
-        background: linear-gradient(270deg, transparent, lighten(#aaa, 17%));
-    }
-    h3 {
-        font-size: 1em;
-        margin: 0;
-    }
     padding: 5px 0 5px 20px;
     margin-bottom: 10px;
 }

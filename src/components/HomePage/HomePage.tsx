@@ -1,4 +1,10 @@
-import React, { ReactElement, useEffect, useRef, useState } from 'react';
+import React, {
+    ReactElement,
+    useEffect,
+    useRef,
+    useState,
+    useCallback,
+} from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 
 import World from 'components/World';
@@ -25,15 +31,31 @@ const HomePage = (): ReactElement => {
         setIsRunning(true);
     }, []);
 
-    const goToParticle = (particleName: string): void => {
-        const {
-            position: { x, y, z },
-        } = particles.find(
-            ({ name }) => name === particleName,
-        ) as AnimatedParticle;
-        world.goToCoords(x, y, z);
-        setIsRunning(false);
-    };
+    const goToParticle = useCallback(
+        (particleName: string): void => {
+            const {
+                position: { x, y, z },
+            } = particles.find(
+                ({ name }) => name === particleName,
+            ) as AnimatedParticle;
+            world.goToCoords(x, y, z);
+            setIsRunning(false);
+        },
+        [particles],
+    );
+
+    const addParticle = useCallback(() => {
+        const particle = world.addParticle();
+        setParticles([...particles, particle]);
+    }, [particles]);
+
+    const deleteParticle = useCallback(
+        (particleName: string): void => {
+            world.deleteParticle(particleName);
+            setParticles(particles.filter(({ name }) => name !== particleName));
+        },
+        [particles],
+    );
 
     return (
         <main className={styles.homePage}>
@@ -73,8 +95,7 @@ const HomePage = (): ReactElement => {
                 <Button
                     onClick={() => {
                         setIsAddParticleVisible(true);
-                        const particle = world.addParticle();
-                        setParticles([...particles, particle]);
+                        addParticle();
                     }}
                     primary
                 >
@@ -82,6 +103,7 @@ const HomePage = (): ReactElement => {
                 </Button>
             </div>
             <ParticlesList
+                deleteParticle={deleteParticle}
                 goToParticle={goToParticle}
                 isParticlesListVisible={isParticlesListVisible}
                 particles={particles}

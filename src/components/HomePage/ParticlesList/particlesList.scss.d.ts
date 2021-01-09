@@ -6,6 +6,7 @@ declare namespace ParticlesListScssNamespace {
     list: string;
     listToggle: string;
     particle: string;
+    particleHeading: string;
     particlesList: string;
   }
 }

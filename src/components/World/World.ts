@@ -86,6 +86,22 @@ class World {
         loop.updatables.push(particle);
         return particle;
     };
+
+    deleteParticle = (particleName: string): void => {
+        particleGroup.remove(
+            particleGroup.children.find(
+                ({ name }) => name === particleName,
+            ) as AnimatedParticle,
+        );
+        const particleIndex = loop.updatables.findIndex(
+            ({ name }) => name === particleName,
+        );
+        loop.updatables.splice(particleIndex, 1);
+        const particleTrajectoryGroup = trajectoryGroup.children.find(
+            ({ name }) => name === `${particleName} trajectory`,
+        ) as Group;
+        trajectoryGroup.remove(particleTrajectoryGroup);
+    };
 }
 
 export default World;
