@@ -6,6 +6,7 @@ import React, {
     useCallback,
 } from 'react';
 import { Button, Icon, Checkbox } from 'semantic-ui-react';
+import mobile from 'is-mobile';
 
 import World from 'components/World';
 import ParticlesList from './ParticlesList';
@@ -16,12 +17,15 @@ import { AnimatedParticle } from '../World/types';
 let world: World;
 
 const initialState: AnimatedParticle[] = [];
+const isMobile = mobile();
 
 const HomePage = (): ReactElement => {
     const sceneContainer = useRef(null);
     const [isRunning, setIsRunning] = useState(false);
     const [isAddParticleVisible, setIsAddParticleVisible] = useState(false);
-    const [isParticlesListVisible, setIsParticlesListVisible] = useState(true);
+    const [isParticlesListVisible, setIsParticlesListVisible] = useState(
+        !isMobile,
+    );
     const [isTrailsVisible, setIsTrailsVisible] = useState(true);
     const [isAllTagsVisible, setIsAllTagsVisible] = useState(false);
     const [isSpeedVectorsVisible, setIsSpeedVectorsVisible] = useState(false);

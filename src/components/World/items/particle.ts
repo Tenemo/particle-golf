@@ -11,10 +11,12 @@ import {
     Group,
     ArrowHelper,
 } from 'three';
+import mobile from 'is-mobile';
 
 import { AnimatedParticle } from '../types';
 
 let particleIndex = 1;
+const isMobile = mobile();
 
 const colors = [
     '#3352FF', // blue
@@ -37,7 +39,7 @@ export const createParticle = (
         transparent: true,
         depthWrite: false,
         uniforms: {
-            size: { value: 10 },
+            size: { value: isMobile ? 20 : 10 },
             scale: { value: 1 },
             color: { value: new Color(color) },
         },
@@ -118,7 +120,7 @@ export const createParticle = (
             const speed = parseFloat(
                 previousPosition.distanceTo(newPosition).toFixed(1),
             );
-            velocityArrow.setLength(speed * 30);
+            velocityArrow.setLength(speed * (isMobile ? 30 : 10));
             velocityArrow.setDirection(direction);
             previousPosition = new Vector3(
                 particle.position.x,
