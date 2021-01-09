@@ -21,10 +21,10 @@ const AddParticle = ({
             </Modal.Content>
             <Modal.Actions>
                 <Button
+                    color="grey"
                     onClick={() => {
                         setIsAddParticleVisible(false);
                     }}
-                    secondary
                 >
                     Cancel
                 </Button>

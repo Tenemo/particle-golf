@@ -3,7 +3,14 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { AnimatedParticle } from '../../World/types';
 
 const ParticlePosition = ({
-    particle: { name, position, isHovered, screenPositionX, screenPositionY },
+    particle: {
+        name,
+        position,
+        isHovered,
+        screenPositionX,
+        screenPositionY,
+        screenPositionZ,
+    },
     isAllTagsVisible,
 }: {
     particle: AnimatedParticle;
@@ -25,18 +32,20 @@ const ParticlePosition = ({
             <div>
                 x: {x.toFixed(2)} y: {y.toFixed(2)} z: {z.toFixed(2)}
             </div>
-            {(isHovered || isAllTagsVisible) && (
-                <div
-                    style={{
-                        position: 'fixed',
-                        top: (screenPositionY as number) - 42,
-                        left: (screenPositionX as number) + 7,
-                    }}
-                >
-                    {name}
-                    <br /> x: {x.toFixed(2)} y: {y.toFixed(2)} z: {z.toFixed(2)}
-                </div>
-            )}
+            {(isHovered || isAllTagsVisible) &&
+                (screenPositionZ as number) === 0 && (
+                    <div
+                        style={{
+                            position: 'fixed',
+                            top: (screenPositionY as number) - 42,
+                            left: (screenPositionX as number) + 7,
+                        }}
+                    >
+                        {name}
+                        <br /> x: {x.toFixed(2)} y: {y.toFixed(2)} z:{' '}
+                        {z.toFixed(2)}
+                    </div>
+                )}
         </>
     );
 };

@@ -101,9 +101,11 @@ export class Loop {
             const {
                 x: screenPositionX,
                 y: screenPositionY,
+                z: screenPositionZ,
             } = this.toScreenPosition(particle);
             particle.screenPositionX = screenPositionX;
             particle.screenPositionY = screenPositionY;
+            particle.screenPositionZ = screenPositionZ;
             particle.isHovered = false;
         }
         for (let i = 0; i < intersects.length; i += 1) {

@@ -66,8 +66,6 @@ export const createParticle = (
     particle.position.x += Math.random() * 10;
     particle.position.y += Math.random() * 10;
 
-    const metersPerSecond = 0.3;
-
     const lineMaterial = new LineBasicMaterial({
         color: new Color(color),
     });
@@ -85,6 +83,7 @@ export const createParticle = (
     particleIndex += 1;
 
     particle.isHovered = false;
+    particle.creationTime = Date.now();
 
     const velocityArrow = new ArrowHelper(
         new Vector3(0, 0, 0),
@@ -97,7 +96,9 @@ export const createParticle = (
     particle.add(velocityArrow);
 
     particle.tick = (delta: number, isStopping?: boolean) => {
+        const metersPerSecond = 0.3;
         particle.position.x += metersPerSecond * delta;
+
         const newPosition = new Vector3(
             particle.position.x,
             particle.position.y,

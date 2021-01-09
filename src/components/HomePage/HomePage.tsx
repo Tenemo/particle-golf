@@ -101,11 +101,11 @@ const HomePage = (): ReactElement => {
                     {isRunning ? (
                         <Button
                             className={styles.pausePlayButton}
+                            color="grey"
                             onClick={() => {
                                 world.stop();
                                 setIsRunning(false);
                             }}
-                            secondary
                         >
                             <Icon name="pause" /> Pause
                         </Button>
@@ -122,10 +122,10 @@ const HomePage = (): ReactElement => {
                         </Button>
                     )}
                     <Button
+                        color="grey"
                         onClick={() => {
                             world.returnToOrigin();
                         }}
-                        secondary
                     >
                         Return to (0,0,0)
                     </Button>

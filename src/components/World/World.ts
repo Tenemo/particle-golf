@@ -5,6 +5,8 @@ import {
     AxesHelper,
     Vector3,
     Group,
+    Frustum,
+    Matrix4,
 } from 'three';
 
 import { createCamera } from './items/camera';
@@ -115,6 +117,22 @@ class World {
     };
 
     toScreenPosition = (particle: AnimatedParticle): Vector3 => {
+        camera.updateMatrix();
+        camera.updateMatrixWorld();
+        particle.updateMatrix();
+        particle.updateMatrixWorld();
+        camera.matrixWorldInverse.copy(camera.matrixWorld).invert();
+        const frustum = new Frustum();
+        frustum.setFromProjectionMatrix(
+            new Matrix4().multiplyMatrices(
+                camera.projectionMatrix,
+                camera.matrixWorldInverse,
+            ),
+        );
+        if (!frustum.containsPoint(particle.position)) {
+            return new Vector3(0, 0, -1);
+        }
+
         const {
             position: { x, y, z },
         } = particle;
