@@ -39,14 +39,21 @@ class World {
 
         controls = createControls(camera, renderer.domElement);
 
-        loop = new Loop(camera, scene, renderer, controls);
-
         const { ambientLight, mainLight } = createLights();
 
-        const axesHelper = new AxesHelper(500);
+        const axesHelper = new AxesHelper(5000);
 
         particleGroup = new Group();
         trajectoryGroup = new Group();
+
+        loop = new Loop(
+            camera,
+            scene,
+            renderer,
+            controls,
+            particleGroup,
+            this.toScreenPosition,
+        );
 
         scene.add(
             particleGroup,
@@ -101,6 +108,24 @@ class World {
             ({ name }) => name === `${particleName} trajectory`,
         ) as Group;
         trajectoryGroup.remove(particleTrajectoryGroup);
+    };
+
+    toScreenPosition = (particle: AnimatedParticle): Vector3 => {
+        const {
+            position: { x, y, z },
+        } = particle;
+        const screenPosition = new Vector3();
+        screenPosition.set(x, y, z);
+        screenPosition.project(camera);
+
+        screenPosition.x = Math.round(
+            ((screenPosition.x + 1) * renderer.domElement.width) / 2,
+        );
+        screenPosition.y = Math.round(
+            ((-screenPosition.y + 1) * renderer.domElement.height) / 2,
+        );
+        screenPosition.z = 0;
+        return screenPosition;
     };
 }
 

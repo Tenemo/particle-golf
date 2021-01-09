@@ -66,6 +66,8 @@ export const createParticle = (trajectoryGroup: Group): AnimatedParticle => {
 
     particleNameIndex += 1;
 
+    particle.isHovered = false;
+
     particle.tick = (delta: number, isStopping?: boolean) => {
         particle.position.x += metersPerSecond * delta;
         const newPosition = new Vector3(

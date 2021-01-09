@@ -1,4 +1,15 @@
-import { PerspectiveCamera, Scene, WebGLRenderer, Clock } from 'three';
+import {
+    PerspectiveCamera,
+    Scene,
+    WebGLRenderer,
+    Clock,
+    Raycaster,
+    Vector2,
+    Group,
+    Color,
+    ShaderMaterial,
+    Vector3,
+} from 'three';
 
 import { AnimatedParticle, DampenedControls } from '../types';
 
@@ -6,6 +17,14 @@ const animationClock = new Clock();
 const globalClock = new Clock();
 let isStopped = false;
 let fpsDelay = 0;
+
+const raycaster = new Raycaster();
+const mouse = new Vector2();
+
+const onMouseMove = (event: MouseEvent): void => {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+};
 
 export class Loop {
     camera: PerspectiveCamera;
@@ -18,17 +37,26 @@ export class Loop {
 
     updatables: AnimatedParticle[];
 
+    particleGroup: Group;
+
+    toScreenPosition: (particle: AnimatedParticle) => Vector3;
+
     constructor(
         camera: PerspectiveCamera,
         scene: Scene,
         renderer: WebGLRenderer,
         controls: DampenedControls,
+        particleGroup: Group,
+        toScreenPosition: (particle: AnimatedParticle) => Vector3,
     ) {
         this.camera = camera;
         this.scene = scene;
         this.renderer = renderer;
         this.controls = controls;
+        this.particleGroup = particleGroup;
+        this.toScreenPosition = toScreenPosition;
         this.updatables = [];
+        window.addEventListener('mousemove', onMouseMove, false);
     }
 
     start(): void {
@@ -66,6 +94,31 @@ export class Loop {
             fpsDelay = 0;
         }
         fpsDelay += 1;
+        raycaster.setFromCamera(mouse, this.camera);
+        const intersects = raycaster.intersectObjects(
+            this.particleGroup.children,
+        );
+        for (let i = 0; i < this.particleGroup.children.length; i += 1) {
+            (this.particleGroup.children[
+                i
+            ] as AnimatedParticle).isHovered = false;
+        }
+        for (let i = 0; i < intersects.length; i += 1) {
+            const intersectedParticle = intersects[i]
+                .object as AnimatedParticle;
+            if ((intersects[i].distanceToRay ?? 1) < 0.2) {
+                (intersectedParticle.material as ShaderMaterial).uniforms.color.value = new Color(
+                    '#ff0000',
+                );
+                const {
+                    x: screenPositionX,
+                    y: screenPositionY,
+                } = this.toScreenPosition(intersectedParticle);
+                intersectedParticle.isHovered = true;
+                intersectedParticle.screenPositionX = screenPositionX;
+                intersectedParticle.screenPositionY = screenPositionY;
+            }
+        }
         this.controls.tick(delta);
     }
 }

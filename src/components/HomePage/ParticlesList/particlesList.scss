@@ -7,7 +7,6 @@
     display: flex;
     overflow-y: hidden;
     transition: left 0.5s;
-    padding-bottom: 10px;
     border: #111 1px solid;
     border-left: none;
     border-radius: 0 10px 10px 0;
@@ -32,14 +31,14 @@
         background: #eee;
         position: sticky;
         top: 0;
-        padding: 10px 0 5px 20px;
+        padding: 10px 0 10px 20px;
         font-size: 1.3em;
     }
 }
 .particleHeading {
     display: flex;
     align-items: center;
-    margin: 3 0;
+    margin: 3px 0 3px 0;
     h3 {
         margin: 0;
         font-size: 1.1em;
@@ -51,6 +50,6 @@
     }
 }
 .particle {
-    padding: 5px 0 5px 20px;
+    padding: 0 0 5px 20px;
     margin-bottom: 10px;
 }

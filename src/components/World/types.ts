@@ -4,6 +4,9 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 export type AnimatedParticle = Points & {
     tick: (delta: number, isStopping?: boolean) => void;
     previousPosition: Vector3;
+    isHovered: boolean;
+    screenPositionX?: number;
+    screenPositionY?: number;
 };
 
 export type DampenedControls = OrbitControls & {

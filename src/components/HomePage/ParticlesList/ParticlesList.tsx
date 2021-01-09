@@ -1,8 +1,8 @@
 import React, { ReactElement, KeyboardEvent } from 'react';
 import { Icon, Popup } from 'semantic-ui-react';
-import { Points } from 'three';
 
 import ParticlePosition from './ParticlePosition';
+import { AnimatedParticle } from '../../World/types';
 
 import styles from './particlesList.scss';
 
@@ -15,7 +15,7 @@ const ParticlesList = ({
 }: {
     isParticlesListVisible: boolean;
     setIsParticlesListVisible: (isVisible: boolean) => void;
-    particles: Points[];
+    particles: AnimatedParticle[];
     goToParticle: (particleName: string) => void;
     deleteParticle: (particleName: string) => void;
 }): ReactElement => {
@@ -27,55 +27,62 @@ const ParticlesList = ({
         >
             <div className={`${styles.list}`}>
                 <h2>Particles list</h2>
-                {particles?.map(({ name, position }) => (
-                    <div key={name} className={styles.particle}>
-                        <div className={styles.particleHeading}>
-                            <h3>{name}</h3>
-                            <Popup
-                                content={`Go to ${name}`}
-                                position="right center"
-                                trigger={
-                                    <Icon
-                                        name="magnify"
-                                        onClick={() => {
-                                            goToParticle(name);
-                                        }}
-                                        onKeyDown={(event: KeyboardEvent) => {
-                                            if (event.key === 'Enter') {
+                {particles?.map((particle) => {
+                    const { name } = particle;
+                    return (
+                        <div key={name} className={styles.particle}>
+                            <div className={styles.particleHeading}>
+                                <h3>{name}</h3>
+                                <Popup
+                                    content={`Go to ${name}`}
+                                    position="right center"
+                                    trigger={
+                                        <Icon
+                                            name="magnify"
+                                            onClick={() => {
                                                 goToParticle(name);
-                                            }
-                                        }}
-                                        role="button"
-                                        size="large"
-                                        tabIndex={0}
-                                    />
-                                }
-                            />
-                            <Popup
-                                content={`Delete ${name}`}
-                                position="right center"
-                                trigger={
-                                    <Icon
-                                        color="red"
-                                        name="delete"
-                                        onClick={() => {
-                                            deleteParticle(name);
-                                        }}
-                                        onKeyDown={(event: KeyboardEvent) => {
-                                            if (event.key === 'Enter') {
+                                            }}
+                                            onKeyDown={(
+                                                event: KeyboardEvent,
+                                            ) => {
+                                                if (event.key === 'Enter') {
+                                                    goToParticle(name);
+                                                }
+                                            }}
+                                            role="button"
+                                            size="large"
+                                            tabIndex={0}
+                                        />
+                                    }
+                                />
+                                <Popup
+                                    content={`Delete ${name}`}
+                                    position="right center"
+                                    trigger={
+                                        <Icon
+                                            color="red"
+                                            name="delete"
+                                            onClick={() => {
                                                 deleteParticle(name);
-                                            }
-                                        }}
-                                        role="button"
-                                        size="large"
-                                        tabIndex={0}
-                                    />
-                                }
-                            />
+                                            }}
+                                            onKeyDown={(
+                                                event: KeyboardEvent,
+                                            ) => {
+                                                if (event.key === 'Enter') {
+                                                    deleteParticle(name);
+                                                }
+                                            }}
+                                            role="button"
+                                            size="large"
+                                            tabIndex={0}
+                                        />
+                                    }
+                                />
+                            </div>
+                            <ParticlePosition particle={particle} />
                         </div>
-                        <ParticlePosition position={position} />
-                    </div>
-                ))}
+                    );
+                })}
             </div>
             <div
                 className={styles.listToggle}
