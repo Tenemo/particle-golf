@@ -5,6 +5,7 @@ import { merge } from 'webpack-merge';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import TerserJSPlugin from 'terser-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 import { commonConfig } from './webpack.common.babel';
 import packageJSON from '../../package.json';
@@ -46,6 +47,13 @@ export default merge(commonConfig, {
         new MiniCssExtractPlugin({
             filename: `${packageJSON.name}-${packageJSON.version}.[chunkhash].min.css`,
             chunkFilename: `${packageJSON.name}-${packageJSON.version}.[chunkhash].[id].min.css`,
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: path.resolve(process.cwd(), '_redirects'),
+                },
+            ],
         }),
         ...(ANALYZE ? [new BundleAnalyzerPlugin()] : []),
     ],
