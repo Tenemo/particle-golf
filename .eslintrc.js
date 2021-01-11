@@ -124,6 +124,7 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': ERROR,
         '@typescript-eslint/no-use-before-define': ERROR,
         '@typescript-eslint/unbound-method': ERROR,
+        '@typescript-eslint/ban-ts-comment': OFF,
 
         'jest/no-commented-out-tests': ERROR,
     },
@@ -138,12 +139,6 @@ module.exports = {
             files: '*.scss.d.ts',
             rules: {
                 'prettier/prettier': OFF,
-            },
-        },
-        {
-            files: '*.spec.tsx',
-            rules: {
-                '@typescript-eslint/ban-ts-comment': OFF,
             },
         },
     ],

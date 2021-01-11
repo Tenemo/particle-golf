@@ -59,6 +59,8 @@ export default merge(commonConfig, {
     ],
     optimization: {
         minimizer: [
+            // the error is due to incorrect @types
+            // @ts-ignore
             new TerserJSPlugin({
                 terserOptions: {
                     sourceMap: false,

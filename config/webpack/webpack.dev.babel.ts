@@ -39,20 +39,21 @@ export default merge(commonConfig, {
             template: `src/index.html`,
             inject: true,
         }),
-        // remove the plugin if it doesn't work at all, otherwise the error is due to incorrect @types
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // the error is due to incorrect @types
         // @ts-ignore
         new CircularDependencyPlugin({
             exclude: /a\.js|node_modules/,
             failOnError: false,
         }),
+        // the error is due to incorrect @types
+        // @ts-ignore
         new WatchIgnorePlugin({ paths: [/(css|scss)\.d\.ts$/] }),
         new webpack.HotModuleReplacementPlugin(),
         new ReactRefreshWebpackPlugin(),
     ],
     optimization: {
         minimize: false,
-        emitOnErrors: false,
+        noEmitOnErrors: true,
     },
     module: {
         rules: [

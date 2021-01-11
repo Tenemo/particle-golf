@@ -38,7 +38,7 @@ let wasRunning: boolean;
 const HomePage = (): ReactElement => {
     const sceneContainer = useRef(null);
     const [isRunning, setIsRunning] = useState(false);
-    const [isAddParticleVisible, setIsAddParticleVisible] = useState(true); // TODO change
+    const [isAddParticleVisible, setIsAddParticleVisible] = useState(false);
     const [isParticlesListVisible, setIsParticlesListVisible] = useState(
         !isMobile,
     );
