@@ -50,8 +50,23 @@ const HomePage = (): ReactElement => {
         'createRandom',
     );
 
+    const onPageVisibilityChange = (): void => {
+        if (document.hidden) {
+            world.stop();
+            setIsRunning(true);
+        } else {
+            world.start();
+            setIsRunning(true);
+        }
+    };
+
     useEffect(() => {
         const container = (sceneContainer.current as unknown) as HTMLScriptElement;
+        document.addEventListener(
+            'visibilitychange',
+            onPageVisibilityChange,
+            false,
+        );
         world = new World(container);
         world.start();
         setIsRunning(true);
