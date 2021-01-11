@@ -122,10 +122,13 @@ const AddParticle = ({
                             expressions.
                         </p>
                         <Header>Examples:</Header>
-                        <div className={styles.expression}>2*4</div>
-                        <div className={styles.expression}>sqrt(t)/3</div>
-                        <div className={styles.expression}>sin(4t)</div>
-                        <div className={styles.expression}>2t^2+3t-1</div>
+                        <div className={styles.expression}>2 * 4</div>
+                        <div className={styles.expression}>cos(4t)</div>
+                        <div className={styles.expression}>
+                            cos(t) + sin(2t) + 3cos(4t)^2
+                        </div>
+                        <div className={styles.expression}>sqrt(t) / 3</div>
+                        <div className={styles.expression}>2t^2 + 3t - 1</div>
                         <div className={styles.expression}>t^3 - 20 + t</div>
                     </Modal.Description>
                 </div>

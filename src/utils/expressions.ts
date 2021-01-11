@@ -81,6 +81,12 @@ const expressionTypes = {
             return `${trigonometricFunction}(${variable})`;
         },
     },
+    trigonometricCoefficient: {
+        generate: (variable: string): string => {
+            const trigonometricFunction = getRandom(trigonometricFunctions);
+            return `${getCoefficient()}${trigonometricFunction}(${variable})`;
+        },
+    },
     trigonometricQuadratic: {
         generate: (variable: string): string => {
             const trigonometricFunction = getRandom(trigonometricFunctions);
