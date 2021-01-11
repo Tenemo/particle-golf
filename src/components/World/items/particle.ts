@@ -12,7 +12,7 @@ import {
     ArrowHelper,
 } from 'three';
 import mobile from 'is-mobile';
-import { parse } from 'mathjs';
+import { parse, derivative } from 'mathjs';
 
 import { generateExpressions } from 'utils/expressions';
 import { AnimatedParticle } from '../types';
@@ -106,6 +106,7 @@ export const createParticle = (
         0,
         new Color(color),
     );
+
     velocityArrow.name = `Particle ${particleIndex} velocity`;
     velocityArrow.visible = isVelocityVectorsVisible;
     particle.add(velocityArrow);
@@ -135,26 +136,33 @@ export const createParticle = (
 
         particle.position.copy(getParticlePosition(particle, t));
 
-        const newPosition = new Vector3();
-        newPosition.copy(particle.position);
         if (trajectoryLimiterCount % 20 === 0) {
+            // Trajectory
             const lineGeometry = new BufferGeometry().setFromPoints([
                 previousPosition,
-                newPosition,
+                particle.position,
             ]);
             const line = new Line(lineGeometry, lineMaterial);
             particleTrajectoryGroup.add(line);
-        }
-        if (trajectoryLimiterCount % 20 === 0) {
-            const direction = new Vector3();
-            direction
-                .subVectors(previousPosition, newPosition)
-                .normalize()
-                .negate();
-            const speed = parseFloat(
-                previousPosition.distanceTo(newPosition).toFixed(1),
-            );
-            velocityArrow.setLength(speed * (isMobile ? 10 : 20));
+
+            // Velocity arrow
+            const velocityVector = new Vector3(
+                derivative(parse(particle.expressions.x), parse('t')).evaluate({
+                    t,
+                }),
+                derivative(parse(particle.expressions.y), parse('t')).evaluate({
+                    t,
+                }),
+                derivative(parse(particle.expressions.z), parse('t')).evaluate({
+                    t,
+                }),
+            ).add(particle.position);
+            const arrowLength = particle.position.distanceTo(velocityVector);
+            const direction = velocityVector
+                .clone()
+                .sub(particle.position)
+                .normalize();
+            velocityArrow.setLength(arrowLength);
             velocityArrow.setDirection(direction);
             previousPosition = new Vector3(
                 particle.position.x,

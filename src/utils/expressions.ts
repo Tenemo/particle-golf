@@ -3,7 +3,7 @@ import { random } from 'lodash';
 const getRandom = <T>(array: Array<T>): T =>
     array[Math.floor(Math.random() * array.length)];
 
-const operators = ['+', '/', '*', '%'];
+const operators = ['+', '/', '*'];
 
 const getCoefficient = (): string => {
     let coefficient: string | number = random(-3, 3);

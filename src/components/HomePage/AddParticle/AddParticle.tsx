@@ -1,7 +1,33 @@
 import React, { ReactElement, useState, SyntheticEvent } from 'react';
-import { Modal, Button, Input, Header } from 'semantic-ui-react';
+import { Modal, Button, Input, Header, Popup } from 'semantic-ui-react';
+import { parse, derivative } from 'mathjs';
 
 import styles from './addParticle.scss';
+
+const isParsable = (expression: string): boolean => {
+    try {
+        parse(expression).compile().evaluate({ t: 1 });
+        derivative(parse(expression), parse('t')).evaluate({
+            t: 1,
+        });
+        return true;
+    } catch (error) {
+        return false;
+    }
+};
+
+const getErrors = (expressions: {
+    x: string;
+    y: string;
+    z: string;
+}): { x: boolean; y: boolean; z: boolean } =>
+    Object.entries(expressions).reduce(
+        (acc, [name, expression]) => ({
+            ...acc,
+            [name]: !isParsable(expression),
+        }),
+        { x: false, y: false, z: false },
+    );
 
 const AddParticle = ({
     closeAddParticle,
@@ -16,6 +42,10 @@ const AddParticle = ({
     }: SyntheticEvent<HTMLInputElement>): void => {
         setExpressions({ ...expressions, [name]: value });
     };
+    const errors = getErrors(expressions);
+    const isFormValid =
+        Object.values(errors).every((error) => !error) &&
+        Object.values(expressions).every((expression) => expression);
     return (
         <Modal
             onClose={() => {
@@ -29,23 +59,47 @@ const AddParticle = ({
                     <Modal.Description>
                         <Header>Rates of change in each direction:</Header>
                         <div className={styles.expressionsInputs}>
-                            <Input
-                                label="(x) i"
-                                name="x"
-                                onChange={onExpressionChange}
-                                value={expressions.x}
+                            <Popup
+                                content="This expression is not parsable."
+                                open={!!errors.x}
+                                position="top right"
+                                trigger={
+                                    <Input
+                                        error={errors.x}
+                                        label="(x) i"
+                                        name="x"
+                                        onChange={onExpressionChange}
+                                        value={expressions.x}
+                                    />
+                                }
                             />
-                            <Input
-                                label="(y) j"
-                                name="y"
-                                onChange={onExpressionChange}
-                                value={expressions.y}
+                            <Popup
+                                content="This expression is not parsable."
+                                open={!!errors.y}
+                                position="top right"
+                                trigger={
+                                    <Input
+                                        error={errors.y}
+                                        label="(y) j"
+                                        name="y"
+                                        onChange={onExpressionChange}
+                                        value={expressions.y}
+                                    />
+                                }
                             />
-                            <Input
-                                label="(z) k"
-                                name="z"
-                                onChange={onExpressionChange}
-                                value={expressions.z}
+                            <Popup
+                                content="This expression is not parsable."
+                                open={!!errors.z}
+                                position="top right"
+                                trigger={
+                                    <Input
+                                        error={errors.z}
+                                        label="(z) k"
+                                        name="z"
+                                        onChange={onExpressionChange}
+                                        value={expressions.z}
+                                    />
+                                }
                             />
                         </div>
                         <p>
@@ -69,7 +123,7 @@ const AddParticle = ({
                         <div className={styles.expression}>2*4</div>
                         <div className={styles.expression}>sqrt(t)/3</div>
                         <div className={styles.expression}>2t^2+3t-1</div>
-                        <div className={styles.expression}>t^3 % 20 + t</div>
+                        <div className={styles.expression}>t^3 - 20 + t</div>
                     </Modal.Description>
                 </div>
             </Modal.Content>
@@ -84,6 +138,7 @@ const AddParticle = ({
                 </Button>
                 <Button
                     content="Add"
+                    disabled={!isFormValid}
                     icon="plus"
                     labelPosition="right"
                     onClick={() => {
