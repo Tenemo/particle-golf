@@ -112,9 +112,11 @@ const AddParticle = ({
                             >
                                 math.js
                             </a>{' '}
-                            are supported. Each expression for every direction
-                            is calculated during frame render with current time
-                            in seconds substituted for <span>t</span>. The
+                            are supported. It must be possible to take the
+                            derivative of <span>t</span> of the given
+                            expression. Each expression for every direction is
+                            calculated during frame render with current time in
+                            seconds substituted for <span>t</span>. The
                             particle&apos;s position on every axis is then
                             updated according to the results from the above
                             expressions.
