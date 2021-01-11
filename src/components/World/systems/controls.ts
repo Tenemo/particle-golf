@@ -21,7 +21,7 @@ export const createControls = (
     controls.enableKeys = true;
     controls.keyPanSpeed = 50;
 
-    controls.tick = (delta) => {
+    controls.tick = ({ delta }) => {
         if (isCameraMoving) {
             if (
                 roundToPrecision(positionTarget.x) ===
@@ -47,7 +47,7 @@ export const createControls = (
             positionDistance = positionTarget.distanceTo(camera.position);
             targetDistance = targetTarget.distanceTo(controls.target);
 
-            if (positionDistance < 0.01 || targetDistance < 0.01) {
+            if (positionDistance < 0.01 && targetDistance < 0.01) {
                 controls.enableDamping = false;
                 camera.position.set(
                     roundToPrecision(positionTarget.x),

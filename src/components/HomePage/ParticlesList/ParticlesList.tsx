@@ -1,10 +1,13 @@
 import React, { ReactElement, KeyboardEvent } from 'react';
 import { Icon, Popup } from 'semantic-ui-react';
+import mobile from 'is-mobile';
 
 import ParticlePosition from './ParticlePosition';
 import { AnimatedParticle } from '../../World/types';
 
 import styles from './particlesList.scss';
+
+const isMobile = mobile();
 
 const ParticlesList = ({
     isParticlesListVisible,
@@ -25,12 +28,12 @@ const ParticlesList = ({
         <section
             className={`${styles.particlesList} ${
                 isParticlesListVisible ? styles.isVisible : ''
-            }`}
+            } ${isMobile ? styles.isMobile : ''}`}
         >
             <div className={`${styles.list}`}>
-                <h2>Particles list</h2>
+                <h2>All particles</h2>
                 {particles?.map((particle) => {
-                    const { name } = particle;
+                    const { name, expressions } = particle;
                     return (
                         <div key={name} className={styles.particle}>
                             <div className={styles.particleHeading}>
@@ -82,6 +85,32 @@ const ParticlesList = ({
                                         />
                                     }
                                 />
+                            </div>
+                            <div>
+                                <div>
+                                    <span className={styles.expressionLabel}>
+                                        f(t)=x:{' '}
+                                    </span>
+                                    <span className={styles.expression}>
+                                        {expressions.x}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className={styles.expressionLabel}>
+                                        f(t)=y:{' '}
+                                    </span>
+                                    <span className={styles.expression}>
+                                        {expressions.y}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className={styles.expressionLabel}>
+                                        f(t)=z:{' '}
+                                    </span>
+                                    <span className={styles.expression}>
+                                        {expressions.z}
+                                    </span>
+                                </div>
                             </div>
                             <ParticlePosition
                                 isAllTagsVisible={isAllTagsVisible}

@@ -19,6 +19,7 @@ import { createControls } from './systems/controls';
 import { Loop } from './systems/Loop';
 import { createParticle } from './items/particle';
 
+import { INITIAL_CAMERA_POSITION } from './constants';
 import { AnimatedParticle, DampenedControls } from './types';
 
 let camera: PerspectiveCamera;
@@ -79,21 +80,26 @@ class World {
     };
 
     returnToOrigin = (): void => {
-        controls.moveCamera(new Vector3(5, 5, 30), new Vector3(0, 0, 0));
+        controls.moveCamera(INITIAL_CAMERA_POSITION, new Vector3(0, 0, 0));
     };
 
     goToCoords = (x: number, y: number, z: number): void => {
         this.stop();
         controls.moveCamera(
-            new Vector3(x + 5, y + 5, z + 10),
+            new Vector3(x + 5, y + 5, z + 30),
             new Vector3(x, y, z),
         );
     };
 
-    addParticle = (): AnimatedParticle => {
+    addParticle = (expressions?: {
+        x: string;
+        y: string;
+        z: string;
+    }): AnimatedParticle => {
         const particle = createParticle(
             trajectoryGroup,
             isVelocityVectorsVisible,
+            expressions,
         );
         particleGroup.add(particle);
         loop.updatables.push(particle);

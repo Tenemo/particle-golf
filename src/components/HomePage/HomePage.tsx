@@ -33,10 +33,12 @@ const options = [
     { key: 'createCustom', text: 'Custom', value: 'createCustom' },
 ];
 
+let wasRunning: boolean;
+
 const HomePage = (): ReactElement => {
     const sceneContainer = useRef(null);
     const [isRunning, setIsRunning] = useState(false);
-    const [isAddParticleVisible, setIsAddParticleVisible] = useState(false);
+    const [isAddParticleVisible, setIsAddParticleVisible] = useState(true); // TODO change
     const [isParticlesListVisible, setIsParticlesListVisible] = useState(
         !isMobile,
     );
@@ -68,10 +70,13 @@ const HomePage = (): ReactElement => {
         [particles],
     );
 
-    const addParticle = useCallback(() => {
-        const particle = world.addParticle();
-        setParticles([...particles, particle]);
-    }, [particles]);
+    const addParticle = useCallback(
+        (expressions?: { x: string; y: string; z: string }) => {
+            const particle = world.addParticle(expressions);
+            setParticles([...particles, particle]);
+        },
+        [particles],
+    );
 
     const deleteParticle = useCallback(
         (particleName: string): void => {
@@ -81,16 +86,34 @@ const HomePage = (): ReactElement => {
         [particles],
     );
 
+    const openAddParticle = useCallback(() => {
+        if (isRunning) {
+            world.stop();
+            setIsRunning(false);
+            wasRunning = true;
+        }
+        setIsAddParticleVisible(true);
+    }, [isRunning]);
+
+    const closeAddParticle = useCallback(() => {
+        setIsAddParticleVisible(false);
+        if (wasRunning) {
+            world.start();
+            setIsRunning(true);
+            wasRunning = false;
+        }
+    }, []);
+
     const chooseCreateParticle = useCallback(
         (_event: SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
             setSelectedCreateOption(data.value as string);
             if (data.value === 'createRandom') {
                 addParticle();
             } else {
-                setIsAddParticleVisible(true);
+                openAddParticle();
             }
         },
-        [addParticle],
+        [addParticle, openAddParticle],
     );
 
     return (
@@ -139,7 +162,7 @@ const HomePage = (): ReactElement => {
                                 if (selectedCreateOption === 'createRandom') {
                                     addParticle();
                                 } else {
-                                    setIsAddParticleVisible(true);
+                                    openAddParticle();
                                 }
                             }}
                             primary
@@ -170,14 +193,17 @@ const HomePage = (): ReactElement => {
                         }}
                         toggle
                     />
-                    <Checkbox
-                        checked={isAllTagsVisible}
-                        label="Show all tags"
-                        onChange={() => {
-                            setIsAllTagsVisible(!isAllTagsVisible);
-                        }}
-                        toggle
-                    />
+                    {/* Tags don't show at all on mobile for some reason */}
+                    {isMobile || (
+                        <Checkbox
+                            checked={isAllTagsVisible}
+                            label="Show all tags"
+                            onChange={() => {
+                                setIsAllTagsVisible(!isAllTagsVisible);
+                            }}
+                            toggle
+                        />
+                    )}
                     <Checkbox
                         checked={isSpeedVectorsVisible}
                         label="Show velocity vectors"
@@ -193,7 +219,8 @@ const HomePage = (): ReactElement => {
             </div>
             {isAddParticleVisible && (
                 <AddParticle
-                    setIsAddParticleVisible={setIsAddParticleVisible}
+                    addParticle={addParticle}
+                    closeAddParticle={closeAddParticle}
                 />
             )}
             <ParticlesList

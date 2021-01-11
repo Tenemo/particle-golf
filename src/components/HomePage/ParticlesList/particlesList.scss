@@ -3,13 +3,32 @@
     z-index: 10;
     top: 30%;
     max-height: 50%;
-    left: -230px;
+    width: 300px;
     display: flex;
     overflow-y: hidden;
     transition: left 0.5s;
     border: #111 1px solid;
     border-left: none;
     border-radius: 0 10px 10px 0;
+}
+.list {
+    padding-right: 20px;
+    width: 300px;
+    h2 {
+        background: #eee;
+        position: sticky;
+        top: 0;
+        padding: 10px 0 10px 20px;
+        font-size: 1.3em;
+    }
+}
+.isMobile {
+    .particlesList {
+        left: -100%;
+    }
+    .list {
+        width: 100%;
+    }
 }
 .isVisible {
     left: 0;
@@ -22,17 +41,6 @@
     padding-top: 12px;
     &:hover {
         background: linear-gradient(90deg, transparent, lighten(#aaa, 17%));
-    }
-}
-.list {
-    padding-right: 20px;
-    width: 230px;
-    h2 {
-        background: #eee;
-        position: sticky;
-        top: 0;
-        padding: 10px 0 10px 20px;
-        font-size: 1.3em;
     }
 }
 .particleHeading {
@@ -52,4 +60,10 @@
 .particle {
     padding: 0 0 5px 20px;
     margin-bottom: 10px;
+}
+.expressionLabel {
+    margin-right: 5px;
+}
+.expression {
+    font-family: "Courier", monospace;
 }

@@ -1,5 +1,7 @@
 import { PerspectiveCamera } from 'three';
 
+import { INITIAL_CAMERA_POSITION } from '../constants';
+
 export const createCamera = (): PerspectiveCamera => {
     const camera = new PerspectiveCamera(
         60, // fov = Field Of View
@@ -7,7 +9,7 @@ export const createCamera = (): PerspectiveCamera => {
         0.1, // near clipping plane
         5000, // far clipping plane
     );
-    camera.position.set(5, 5, 30);
+    camera.position.copy(INITIAL_CAMERA_POSITION);
 
     return camera;
 };

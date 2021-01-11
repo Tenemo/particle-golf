@@ -13,7 +13,6 @@ import { AnimatedParticle, DampenedControls } from '../types';
 
 const animationClock = new Clock();
 const globalClock = new Clock();
-let isStopped = false;
 let fpsDelay = 0;
 
 const raycaster = new Raycaster();
@@ -58,8 +57,9 @@ export class Loop {
     }
 
     start(): void {
+        this.tick({ isStarting: true });
         this.renderer.setAnimationLoop(() => {
-            this.tick();
+            this.tick({});
             this.globalTick();
             this.renderer.render(this.scene, this.camera);
         });
@@ -70,16 +70,20 @@ export class Loop {
             this.globalTick();
             this.renderer.render(this.scene, this.camera);
         });
-        this.tick(true);
-        isStopped = true;
+        this.tick({ isStopping: true });
     }
 
-    tick(isStopping?: boolean): void {
+    tick({
+        isStopping,
+        isStarting,
+    }: {
+        isStopping?: boolean;
+        isStarting?: boolean;
+    }): void {
         const delta = animationClock.getDelta();
         this.updatables.forEach((updatableObject) => {
-            updatableObject.tick(isStopped ? 0 : delta, isStopping);
+            updatableObject.tick({ delta, isStopping, isStarting });
         });
-        isStopped = false;
     }
 
     globalTick(): void {
@@ -115,6 +119,6 @@ export class Loop {
                 intersectedParticle.isHovered = true;
             }
         }
-        this.controls.tick(delta);
+        this.controls.tick({ delta });
     }
 }

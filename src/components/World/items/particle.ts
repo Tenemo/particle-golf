@@ -12,7 +12,9 @@ import {
     ArrowHelper,
 } from 'three';
 import mobile from 'is-mobile';
+import { parse } from 'mathjs';
 
+import { generateExpressions } from 'utils/expressions';
 import { AnimatedParticle } from '../types';
 
 let particleIndex = 1;
@@ -29,9 +31,21 @@ const colors = [
     '#464646', // gray
 ];
 
+const getParticlePosition = (
+    particle: AnimatedParticle,
+    t: number,
+): Vector3 => {
+    return new Vector3(
+        parse(particle.expressions.x).compile().evaluate({ t }),
+        parse(particle.expressions.y).compile().evaluate({ t }),
+        parse(particle.expressions.z).compile().evaluate({ t }),
+    );
+};
+
 export const createParticle = (
     trajectoryGroup: Group,
     isVelocityVectorsVisible: boolean,
+    expressions?: { x: string; y: string; z: string },
 ): AnimatedParticle => {
     const color = colors[particleIndex % colors.length];
     const geometry = new SphereBufferGeometry(0, 0, 0);
@@ -62,20 +76,22 @@ export const createParticle = (
     particle.name = `Particle ${particleIndex}`;
     particle.color = color;
 
-    particle.position.z += Math.random() * 10;
-    particle.position.x += Math.random() * 10;
-    particle.position.y += Math.random() * 10;
+    if (expressions) {
+        particle.expressions = expressions;
+    } else {
+        particle.expressions = generateExpressions();
+    }
+    particle.lastResumeTime = Date.now();
+    particle.totalTime = 0;
+    particle.position.copy(getParticlePosition(particle, 0));
 
     const lineMaterial = new LineBasicMaterial({
         color: new Color(color),
     });
 
     let trajectoryLimiterCount = 0;
-    let previousPosition = new Vector3(
-        particle.position.x,
-        particle.position.y,
-        particle.position.z,
-    );
+    let previousPosition = new Vector3();
+    previousPosition.copy(particle.position);
     const particleTrajectoryGroup = new Group();
     particleTrajectoryGroup.name = `Particle ${particleIndex} trajectory`;
     trajectoryGroup.add(particleTrajectoryGroup);
@@ -83,7 +99,6 @@ export const createParticle = (
     particleIndex += 1;
 
     particle.isHovered = false;
-    particle.creationTime = Date.now();
 
     const velocityArrow = new ArrowHelper(
         new Vector3(0, 0, 0),
@@ -95,16 +110,34 @@ export const createParticle = (
     velocityArrow.visible = isVelocityVectorsVisible;
     particle.add(velocityArrow);
 
-    particle.tick = (delta: number, isStopping?: boolean) => {
-        const metersPerSecond = 0.3;
-        particle.position.x += metersPerSecond * delta;
+    particle.tick = ({
+        isStopping,
+        isStarting,
+    }: {
+        isStopping?: boolean;
+        isStarting?: boolean;
+    }) => {
+        if (isStopping) {
+            particle.totalTime += Date.now() - particle.lastResumeTime;
+            const lineGeometry = new BufferGeometry().setFromPoints([
+                previousPosition,
+                particle.position,
+            ]);
+            const line = new Line(lineGeometry, lineMaterial);
+            particleTrajectoryGroup.add(line);
+            return;
+        }
+        if (isStarting) {
+            particle.lastResumeTime = Date.now();
+        }
+        const t =
+            (particle.totalTime + Date.now() - particle.lastResumeTime) / 1000;
 
-        const newPosition = new Vector3(
-            particle.position.x,
-            particle.position.y,
-            particle.position.z,
-        );
-        if (trajectoryLimiterCount % 50 === 0 || isStopping) {
+        particle.position.copy(getParticlePosition(particle, t));
+
+        const newPosition = new Vector3();
+        newPosition.copy(particle.position);
+        if (trajectoryLimiterCount % 20 === 0) {
             const lineGeometry = new BufferGeometry().setFromPoints([
                 previousPosition,
                 newPosition,
@@ -112,7 +145,7 @@ export const createParticle = (
             const line = new Line(lineGeometry, lineMaterial);
             particleTrajectoryGroup.add(line);
         }
-        if (trajectoryLimiterCount % 50 === 0) {
+        if (trajectoryLimiterCount % 20 === 0) {
             const direction = new Vector3();
             direction
                 .subVectors(previousPosition, newPosition)

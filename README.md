@@ -8,10 +8,10 @@
 
 ### Stack
 
--   TypeScript, parsed with babel
+-   TypeScript – strongly typed JavaScript
 -   React.js
--   three.js
--   Webpack 5
--   Babel 7
--   ESLint + Stylelint + Prettier, on top of customized VSCode workspace
--   sentry.io error and performance tracing
+-   three.js on top of WebGL – rendering
+-   math.js – expression parsing
+-   Webpack 5 + Babel 7 – transpilation and building
+-   ESLint + Stylelint + Prettier with VSCode extensions
+-   sentry.io – error & performance tracking
