@@ -5,6 +5,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import ReactRefreshBabel from 'react-refresh/babel';
 import webpack, { WatchIgnorePlugin } from 'webpack';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 import { commonConfig } from './webpack.common.babel';
 import packageJSON from '../../package.json';
@@ -50,6 +51,14 @@ export default merge(commonConfig, {
         new WatchIgnorePlugin({ paths: [/(css|scss)\.d\.ts$/] }),
         new webpack.HotModuleReplacementPlugin(),
         new ReactRefreshWebpackPlugin(),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: path.resolve(process.cwd(), 'src/images'),
+                    to: 'images',
+                },
+            ],
+        }),
     ],
     optimization: {
         minimize: false,

@@ -25,6 +25,7 @@ export default merge(commonConfig, {
     output: {
         filename: `${packageJSON.name}-${packageJSON.version}.[chunkhash].min.js`,
         path: path.join(process.cwd(), `dist`),
+        publicPath: '',
     },
     devtool: false,
     plugins: [
@@ -52,6 +53,10 @@ export default merge(commonConfig, {
             patterns: [
                 {
                     from: path.resolve(process.cwd(), '_redirects'),
+                },
+                {
+                    from: path.resolve(process.cwd(), 'src/images/loader.gif'),
+                    to: 'images',
                 },
             ],
         }),
