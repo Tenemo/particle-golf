@@ -45,7 +45,7 @@ class World {
 
         const { ambientLight, mainLight } = createLights();
 
-        const axesHelper = new AxesHelper(5000);
+        const axesHelper = new AxesHelper(10000000);
 
         particleGroup = new Group();
         trajectoryGroup = new Group();

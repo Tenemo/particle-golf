@@ -136,7 +136,7 @@ export const createParticle = (
 
         particle.position.copy(getParticlePosition(particle, t));
 
-        if (trajectoryLimiterCount % 20 === 0) {
+        if (trajectoryLimiterCount % 10 === 0) {
             // Trajectory
             const lineGeometry = new BufferGeometry().setFromPoints([
                 previousPosition,

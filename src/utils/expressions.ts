@@ -5,6 +5,9 @@ const getRandom = <T>(array: Array<T>): T =>
 
 const operators = ['+', '/', '*'];
 
+// tan() doesn't look amazing due to the imprecision
+const trigonometricFunctions = ['sin', 'cos'];
+
 const getCoefficient = (): string => {
     let coefficient: string | number = random(-3, 3);
     if (coefficient === -1) {
@@ -58,9 +61,10 @@ const randomOperationWithInteger = (): string => {
 };
 
 const expressionTypes = {
-    static: {
-        generate: (): string => getRandomInteger(),
-    },
+    // boring
+    // static: {
+    //     generate: (): string => getRandomInteger(),
+    // },
     onlyVariable: {
         generate: (variable: string): string => variable,
     },
@@ -68,6 +72,23 @@ const expressionTypes = {
         generate: (variable: string): string => {
             let expression = `${getCoefficient()}${variable}`;
             expression += randomOperationWithInteger();
+            return expression;
+        },
+    },
+    trigonometric: {
+        generate: (variable: string): string => {
+            const trigonometricFunction = getRandom(trigonometricFunctions);
+            return `${trigonometricFunction}(${variable})`;
+        },
+    },
+    trigonometricQuadratic: {
+        generate: (variable: string): string => {
+            const trigonometricFunction = getRandom(trigonometricFunctions);
+            let expression = `${getCoefficient()}${trigonometricFunction}(${variable})^2`;
+            expression += withCoefficient(
+                `${trigonometricFunction}(${variable})`,
+            );
+            expression += randomIntegerToAppend();
             return expression;
         },
     },
@@ -79,15 +100,16 @@ const expressionTypes = {
             return expression;
         },
     },
-    cubic: {
-        generate: (variable: string): string => {
-            let expression = `${getCoefficient()}${variable}^3`;
-            expression += `${withCoefficient(variable)}^2`;
-            expression += withCoefficient(variable);
-            expression += randomIntegerToAppend();
-            return expression;
-        },
-    },
+    // boring, almost straight line very fast and the distances are too large to be practical
+    // cubic: {
+    //     generate: (variable: string): string => {
+    //         let expression = `${getCoefficient()}${variable}^3`;
+    //         expression += `${withCoefficient(variable)}^2`;
+    //         expression += withCoefficient(variable);
+    //         expression += randomIntegerToAppend();
+    //         return expression;
+    //     },
+    // },
     root: {
         generate: (variable: string): string => {
             let expression = `${getCoefficient()}sqrt(${variable})`;
