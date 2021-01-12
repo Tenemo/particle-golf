@@ -243,6 +243,7 @@ const HomePage = (): ReactElement => {
                 goToParticle={goToParticle}
                 isAllTagsVisible={isAllTagsVisible}
                 isParticlesListVisible={isParticlesListVisible}
+                isRunning={isRunning}
                 particles={particles}
                 setIsParticlesListVisible={setIsParticlesListVisible}
             />

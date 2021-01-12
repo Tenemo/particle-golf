@@ -10,11 +10,15 @@ const ParticlePosition = ({
         screenPositionX,
         screenPositionY,
         screenPositionZ,
+        totalTime,
+        lastResumeTime,
     },
     isAllTagsVisible,
+    isRunning,
 }: {
     particle: AnimatedParticle;
     isAllTagsVisible: boolean;
+    isRunning: boolean;
 }): ReactElement => {
     const [statePosition, updatePosition] = useState({
         ...position,
@@ -27,10 +31,14 @@ const ParticlePosition = ({
         return () => clearInterval(interval);
     }, [isHovered, position]);
     const { x, y, z } = statePosition;
+    const t =
+        (isRunning ? totalTime + Date.now() - lastResumeTime : totalTime) /
+        1000;
     return (
         <>
             <div>
-                x: {x.toFixed(2)} y: {y.toFixed(2)} z: {z.toFixed(2)}
+                x:&nbsp;{x.toFixed(2)} y:&nbsp;{y.toFixed(2)} z:&nbsp;
+                {z.toFixed(2)} t: {t.toFixed(2)}&nbsp;s
             </div>
             {(isHovered || isAllTagsVisible) &&
                 (screenPositionZ as number) === 0 && (
@@ -42,8 +50,9 @@ const ParticlePosition = ({
                         }}
                     >
                         {name}
-                        <br /> x: {x.toFixed(2)} y: {y.toFixed(2)} z:{' '}
-                        {z.toFixed(2)}
+                        <br /> x:&nbsp;{x.toFixed(2)} y:&nbsp;{y.toFixed(2)}{' '}
+                        z:&nbsp;{z.toFixed(2)} <br /> t:&nbsp;{t.toFixed(2)}
+                        &nbsp;s
                     </div>
                 )}
         </>

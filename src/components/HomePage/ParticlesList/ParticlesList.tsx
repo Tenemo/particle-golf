@@ -16,6 +16,7 @@ const ParticlesList = ({
     goToParticle,
     deleteParticle,
     isAllTagsVisible,
+    isRunning,
 }: {
     isParticlesListVisible: boolean;
     setIsParticlesListVisible: (isVisible: boolean) => void;
@@ -23,6 +24,7 @@ const ParticlesList = ({
     goToParticle: (particleName: string) => void;
     deleteParticle: (particleName: string) => void;
     isAllTagsVisible: boolean;
+    isRunning: boolean;
 }): ReactElement => {
     return (
         <section
@@ -114,6 +116,7 @@ const ParticlesList = ({
                             </div>
                             <ParticlePosition
                                 isAllTagsVisible={isAllTagsVisible}
+                                isRunning={isRunning}
                                 particle={particle}
                             />
                         </div>

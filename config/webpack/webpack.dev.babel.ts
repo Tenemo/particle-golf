@@ -54,7 +54,7 @@ export default merge(commonConfig, {
         new CopyWebpackPlugin({
             patterns: [
                 {
-                    from: path.resolve(process.cwd(), 'src/images'),
+                    from: path.resolve(process.cwd(), 'src/images/loader.gif'),
                     to: 'images',
                 },
             ],
