@@ -125,6 +125,7 @@ module.exports = {
         '@typescript-eslint/no-use-before-define': ERROR,
         '@typescript-eslint/unbound-method': ERROR,
         '@typescript-eslint/ban-ts-comment': OFF,
+        '@typescript-eslint/no-floating-promises': OFF,
 
         'jest/no-commented-out-tests': ERROR,
     },

@@ -1,0 +1,21 @@
+.languageSelect.languageSelect {
+    > div {
+        cursor: pointer;
+        &:hover {
+            font-weight: 700;
+        }
+    }
+    i {
+        margin: 0;
+    }
+    .selectedLanguage {
+        cursor: inherit;
+        font-weight: 700;
+    }
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    text-align: right;
+}

@@ -13,12 +13,14 @@ import {
     Dropdown,
     DropdownProps,
 } from 'semantic-ui-react';
+import { useTranslation } from 'react-i18next';
 
 import mobile from 'is-mobile';
 
 import World from 'components/World';
 import ParticlesList from './ParticlesList';
 import AddParticle from './AddParticle';
+import LanguageSelect from './LanguageSelect';
 
 import styles from './homePage.scss';
 import { AnimatedParticle } from '../World/types';
@@ -28,14 +30,11 @@ let world: World;
 const initialState: AnimatedParticle[] = [];
 const isMobile = mobile();
 
-const options = [
-    { key: 'createRandom', text: 'Random', value: 'createRandom' },
-    { key: 'createCustom', text: 'Custom', value: 'createCustom' },
-];
-
 let wasRunning: boolean;
 
 const HomePage = (): ReactElement => {
+    const { t } = useTranslation();
+
     const sceneContainer = useRef(null);
     const [isRunning, setIsRunning] = useState(false);
     const [isAddParticleVisible, setIsAddParticleVisible] = useState(false);
@@ -49,6 +48,19 @@ const HomePage = (): ReactElement => {
     const [selectedCreateOption, setSelectedCreateOption] = useState(
         'createRandom',
     );
+
+    const options = [
+        {
+            key: 'createRandom',
+            text: t('homePage.random'),
+            value: 'createRandom',
+        },
+        {
+            key: 'createCustom',
+            text: t('homePage.custom'),
+            value: 'createCustom',
+        },
+    ];
 
     const onPageVisibilityChange = (): void => {
         if (document.hidden) {
@@ -120,7 +132,19 @@ const HomePage = (): ReactElement => {
     }, []);
 
     const chooseCreateParticle = useCallback(
-        (_event: SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+        (event: SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+            if (event.type === 'blur') {
+                return;
+            }
+            if (
+                event.type === 'keydown' &&
+                // @ts-ignore
+                event.key !== 'Enter' &&
+                // @ts-ignore
+                event.key !== 'Space'
+            ) {
+                return;
+            }
             setSelectedCreateOption(data.value as string);
             if (data.value === 'createRandom') {
                 addParticle();
@@ -148,7 +172,7 @@ const HomePage = (): ReactElement => {
                             }}
                         >
                             <Icon name="pause" />
-                            &nbsp;Pause
+                            &nbsp;{t('homePage.pause')}
                         </Button>
                     ) : (
                         <Button
@@ -160,7 +184,7 @@ const HomePage = (): ReactElement => {
                             primary
                         >
                             <Icon name="play" />
-                            &nbsp;Resume
+                            &nbsp;{t('homePage.resume')}
                         </Button>
                     )}
                     <Button
@@ -169,7 +193,7 @@ const HomePage = (): ReactElement => {
                             world.returnToOrigin();
                         }}
                     >
-                        Return to (0,0,0)
+                        {t('homePage.returnToOrigin')}
                     </Button>
                     <Button.Group color="blue">
                         <Button
@@ -182,11 +206,9 @@ const HomePage = (): ReactElement => {
                             }}
                             primary
                         >
-                            Add{' '}
                             {selectedCreateOption === 'createRandom'
-                                ? 'random'
-                                : 'custom'}{' '}
-                            particle
+                                ? t('homePage.addRandomParticle')
+                                : t('homePage.addCustomParticle')}
                         </Button>
                         <Dropdown
                             className="button icon"
@@ -201,7 +223,7 @@ const HomePage = (): ReactElement => {
                 <div className={styles.toggles}>
                     <Checkbox
                         checked={isTrailsVisible}
-                        label="Show trajectories"
+                        label={t('homePage.trajectories')}
                         onChange={() => {
                             setIsTrailsVisible(!isTrailsVisible);
                             world.setIsTrailsVisible(!isTrailsVisible);
@@ -212,7 +234,7 @@ const HomePage = (): ReactElement => {
                     {isMobile || (
                         <Checkbox
                             checked={isAllTagsVisible}
-                            label="Show all tags"
+                            label={t('homePage.allTags')}
                             onChange={() => {
                                 setIsAllTagsVisible(!isAllTagsVisible);
                             }}
@@ -221,7 +243,7 @@ const HomePage = (): ReactElement => {
                     )}
                     <Checkbox
                         checked={isSpeedVectorsVisible}
-                        label="Show velocity vectors"
+                        label={t('homePage.velocityVectors')}
                         onChange={() => {
                             setIsSpeedVectorsVisible(!isSpeedVectorsVisible);
                             world.setIsVelocityVectorsVisible(
@@ -247,6 +269,7 @@ const HomePage = (): ReactElement => {
                 particles={particles}
                 setIsParticlesListVisible={setIsParticlesListVisible}
             />
+            <LanguageSelect />
             <div ref={sceneContainer} className={styles.sceneContainer} />
         </main>
     );

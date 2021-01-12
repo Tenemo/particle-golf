@@ -5,6 +5,7 @@ import { Integrations } from '@sentry/tracing';
 
 import Root from 'components/Root';
 import { BUILD_TYPE } from 'constants/appConstants';
+import 'utils/i18n';
 import packageJSON from '../package.json';
 
 if (BUILD_TYPE === 'production') {

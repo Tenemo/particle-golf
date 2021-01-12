@@ -1,6 +1,7 @@
 import React, { ReactElement, KeyboardEvent } from 'react';
 import { Icon, Popup } from 'semantic-ui-react';
 import mobile from 'is-mobile';
+import { useTranslation } from 'react-i18next';
 
 import ParticlePosition from './ParticlePosition';
 import { AnimatedParticle } from '../../World/types';
@@ -26,6 +27,7 @@ const ParticlesList = ({
     isAllTagsVisible: boolean;
     isRunning: boolean;
 }): ReactElement => {
+    const { t } = useTranslation();
     return (
         <section
             className={`${styles.particlesList} ${
@@ -33,7 +35,7 @@ const ParticlesList = ({
             } ${isMobile ? styles.isMobile : ''}`}
         >
             <div className={`${styles.list}`}>
-                <h2>All particles</h2>
+                <h2>{t('particleList.allParticles')}</h2>
                 {particles?.map((particle) => {
                     const { name, expressions } = particle;
                     return (
@@ -43,7 +45,9 @@ const ParticlesList = ({
                                     {name}
                                 </h3>
                                 <Popup
-                                    content={`Go to ${name}`}
+                                    content={`${t(
+                                        'particleList.goTo',
+                                    )} ${name}`}
                                     position="right center"
                                     trigger={
                                         <Icon
@@ -54,7 +58,10 @@ const ParticlesList = ({
                                             onKeyDown={(
                                                 event: KeyboardEvent,
                                             ) => {
-                                                if (event.key === 'Enter') {
+                                                if (
+                                                    event.key === 'Enter' ||
+                                                    event.key === 'Space'
+                                                ) {
                                                     goToParticle(name);
                                                 }
                                             }}
@@ -65,7 +72,9 @@ const ParticlesList = ({
                                     }
                                 />
                                 <Popup
-                                    content={`Delete ${name}`}
+                                    content={`${t(
+                                        'particleList.delete',
+                                    )} ${name}`}
                                     position="right center"
                                     trigger={
                                         <Icon
@@ -77,7 +86,10 @@ const ParticlesList = ({
                                             onKeyDown={(
                                                 event: KeyboardEvent,
                                             ) => {
-                                                if (event.key === 'Enter') {
+                                                if (
+                                                    event.key === 'Enter' ||
+                                                    event.key === 'Space'
+                                                ) {
                                                     deleteParticle(name);
                                                 }
                                             }}
@@ -129,7 +141,7 @@ const ParticlesList = ({
                     setIsParticlesListVisible(!isParticlesListVisible);
                 }}
                 onKeyDown={(event: KeyboardEvent) => {
-                    if (event.key === 'Enter') {
+                    if (event.key === 'Enter' || event.key === 'Space') {
                         setIsParticlesListVisible(!isParticlesListVisible);
                     }
                 }}

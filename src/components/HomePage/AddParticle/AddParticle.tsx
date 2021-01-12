@@ -1,6 +1,7 @@
 import React, { ReactElement, useState, SyntheticEvent } from 'react';
 import { Modal, Button, Input, Header, Popup } from 'semantic-ui-react';
 import { parse, derivative } from 'mathjs';
+import { useTranslation } from 'react-i18next';
 
 import styles from './addParticle.scss';
 
@@ -36,6 +37,7 @@ const AddParticle = ({
     closeAddParticle: () => void;
     addParticle: (expressions?: { x: string; y: string; z: string }) => void;
 }): ReactElement => {
+    const { t } = useTranslation();
     const [expressions, setExpressions] = useState({ x: '', y: '', z: '' });
     const onExpressionChange = ({
         currentTarget: { value, name },
@@ -53,11 +55,11 @@ const AddParticle = ({
             }}
             open
         >
-            <Modal.Header>Add a custom particle</Modal.Header>
+            <Modal.Header>{t('addParticle.addCustomParticle')}</Modal.Header>
             <Modal.Content>
                 <div className={styles.modalContent}>
                     <Modal.Description>
-                        <Header>Rates of change in each direction:</Header>
+                        <Header>{t('addParticle.rateOfChange')}</Header>
                         <div className={styles.expressionsInputs}>
                             <Popup
                                 content="This expression is not parsable."
@@ -66,7 +68,7 @@ const AddParticle = ({
                                 trigger={
                                     <Input
                                         error={errors.x}
-                                        label="(x) i"
+                                        label="f(t)=x"
                                         name="x"
                                         onChange={onExpressionChange}
                                         value={expressions.x}
@@ -80,7 +82,7 @@ const AddParticle = ({
                                 trigger={
                                     <Input
                                         error={errors.y}
-                                        label="(y) j"
+                                        label="f(t)=y"
                                         name="y"
                                         onChange={onExpressionChange}
                                         value={expressions.y}
@@ -94,7 +96,7 @@ const AddParticle = ({
                                 trigger={
                                     <Input
                                         error={errors.z}
-                                        label="(z) k"
+                                        label="f(t)=z"
                                         name="z"
                                         onChange={onExpressionChange}
                                         value={expressions.z}
@@ -102,26 +104,13 @@ const AddParticle = ({
                                 }
                             />
                         </div>
-                        <p>
-                            <span>t</span> is the only variable allowed.
-                            Expressions parsable by{' '}
-                            <a
-                                href="https://mathjs.org/docs/expressions/parsing.html"
-                                rel="noreferrer"
-                                target="_blank"
-                            >
-                                math.js
-                            </a>{' '}
-                            are supported. It must be possible to take the
-                            derivative of <span>t</span> of the given
-                            expression. Each expression for every direction is
-                            calculated during frame render with current time in
-                            seconds substituted for <span>t</span>. The
-                            particle&apos;s position on every axis is then
-                            updated according to the results from the above
-                            expressions.
-                        </p>
-                        <Header>Examples:</Header>
+                        <p
+                            // eslint-disable-next-line react/no-danger
+                            dangerouslySetInnerHTML={{
+                                __html: t('addParticle.description'),
+                            }}
+                        />
+                        <Header>{t('addParticle.examples')}</Header>
                         <div className={styles.expression}>2 * 4</div>
                         <div className={styles.expression}>cos(4t)</div>
                         <div className={styles.expression}>
