@@ -20,9 +20,9 @@ const LanguageSelect = (): ReactElement => {
                 }
                 id="en"
                 onClick={() => {
-                    // if (i18n.language === 'en') {
-                    //     return;
-                    // }
+                    if (i18n.language === 'en') {
+                        return;
+                    }
                     changeLanguage('en');
                 }}
                 onKeyDown={(event: KeyboardEvent<HTMLDivElement>) => {
@@ -44,9 +44,9 @@ const LanguageSelect = (): ReactElement => {
                 }
                 id="pl"
                 onClick={() => {
-                    // if (i18n.language === 'pl') {
-                    //     return;
-                    // }
+                    if (i18n.language === 'pl') {
+                        return;
+                    }
                     changeLanguage('pl');
                 }}
                 onKeyDown={(event: KeyboardEvent<HTMLDivElement>) => {
