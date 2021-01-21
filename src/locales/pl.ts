@@ -23,6 +23,9 @@ export default {
             examples: 'Przykłady:',
             description:
                 'Jedyna dozowolona zmienna we wzorach to <span>t</span>. Obsługiwana jest większość wzorów parsowalnych przez <a href="https://mathjs.org/docs/expressions/parsing.html" rel="noreferrer" target="_blank">math.js</a> z których da się wyprowadzić pochodną (dlatego np. operator modulo, %, nie jest wspierany). Pozycja cząstki w każdym kierunku jest obliczana co klatkę po podstawieniu czasu istnienia cząstki w sekundach pod zmienną <span>t</span>.',
+            cancel: 'Anuluj',
+            add: 'Stwórz',
+            notParsable: 'To wyrażenie nie jest parsowalne',
         },
     },
 };

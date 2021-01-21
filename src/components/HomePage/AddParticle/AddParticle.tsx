@@ -62,7 +62,7 @@ const AddParticle = ({
                         <Header>{t('addParticle.rateOfChange')}</Header>
                         <div className={styles.expressionsInputs}>
                             <Popup
-                                content="This expression is not parsable."
+                                content={t('addParticle.notParsable')}
                                 open={!!errors.x}
                                 position="top right"
                                 trigger={
@@ -76,7 +76,7 @@ const AddParticle = ({
                                 }
                             />
                             <Popup
-                                content="This expression is not parsable."
+                                content={t('addParticle.notParsable')}
                                 open={!!errors.y}
                                 position="top right"
                                 trigger={
@@ -90,7 +90,7 @@ const AddParticle = ({
                                 }
                             />
                             <Popup
-                                content="This expression is not parsable."
+                                content={t('addParticle.notParsable')}
                                 open={!!errors.z}
                                 position="top right"
                                 trigger={
@@ -129,10 +129,10 @@ const AddParticle = ({
                         closeAddParticle();
                     }}
                 >
-                    Cancel
+                    {t('addParticle.cancel')}
                 </Button>
                 <Button
-                    content="Add"
+                    content={t('addParticle.add')}
                     disabled={!isFormValid}
                     icon="plus"
                     labelPosition="right"

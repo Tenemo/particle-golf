@@ -22,6 +22,9 @@ export default {
             rateOfChange: 'Particle position expressions:',
             examples: 'Examples:',
             description: `<span>t</span> is the only variable allowed. Expressions parsable by <a href="https://mathjs.org/docs/expressions/parsing.html" rel="noreferrer" target="_blank">math.js</a> are supported. It must be possible to take the derivative of of the given expression (that's why e.g. the modulus operator, %, is not supported). The particle's position in each direction is calculated by substituting current time in seconds for <span>t</span> every frame.`,
+            cancel: 'Cancel',
+            add: 'Add',
+            notParsable: 'This expression is not parsable',
         },
     },
 };
