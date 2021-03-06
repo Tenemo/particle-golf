@@ -71,12 +71,20 @@ class World {
         new Resizer(sceneContainer, camera, renderer);
     }
 
+    isRunning = false;
+
     start = (): void => {
-        loop.start();
+        if (this.isRunning === false) {
+            loop.start();
+            this.isRunning = true;
+        }
     };
 
     stop = (): void => {
-        loop.stop();
+        if (this.isRunning === true) {
+            loop.stop();
+            this.isRunning = false;
+        }
     };
 
     returnToOrigin = (): void => {
