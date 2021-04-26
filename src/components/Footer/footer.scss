@@ -1,0 +1,16 @@
+.footer {
+    margin-bottom: 5px;
+    display: flex;
+    a {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.linkedinIcon,
+.githubIcon {
+    margin-right: 3px;
+    margin-left: 10px;
+    width: 16px;
+    height: 16px;
+}

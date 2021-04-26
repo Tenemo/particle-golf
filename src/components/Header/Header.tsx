@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, memo } from 'react';
 import { Link } from 'react-router-dom';
 
 import styles from './header.scss';
@@ -14,4 +14,4 @@ const Header = (): ReactElement => {
     );
 };
 
-export default Header;
+export default memo(Header);

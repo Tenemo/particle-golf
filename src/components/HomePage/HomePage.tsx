@@ -20,7 +20,6 @@ import mobile from 'is-mobile';
 import World from 'components/World';
 import ParticlesList from './ParticlesList';
 import AddParticle from './AddParticle';
-import LanguageSelect from './LanguageSelect';
 
 import styles from './homePage.scss';
 import { AnimatedParticle } from '../World/types';
@@ -269,7 +268,6 @@ const HomePage = (): ReactElement => {
                 particles={particles}
                 setIsParticlesListVisible={setIsParticlesListVisible}
             />
-            <LanguageSelect />
             <div ref={sceneContainer} className={styles.sceneContainer} />
         </main>
     );

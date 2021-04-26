@@ -1,4 +1,4 @@
-import React, { ReactElement, KeyboardEvent } from 'react';
+import React, { ReactElement, KeyboardEvent, memo } from 'react';
 import { Icon, Popup } from 'semantic-ui-react';
 import mobile from 'is-mobile';
 import { useTranslation } from 'react-i18next';
@@ -158,4 +158,4 @@ const ParticlesList = ({
     );
 };
 
-export default ParticlesList;
+export default memo(ParticlesList);

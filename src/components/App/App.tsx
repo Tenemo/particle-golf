@@ -6,6 +6,7 @@ import 'semantic-ui-css/semantic.css';
 
 import NotFound from 'components/NotFound';
 import Header from 'components/Header';
+import Footer from 'components/Footer';
 import HomePage from 'components/HomePage';
 
 import styles from './app.scss';
@@ -54,6 +55,7 @@ export class App extends Component {
                             <Route component={HomePage} exact path="/" />
                             <Route component={NotFound} />
                         </Switch>
+                        <Footer />
                     </>
                 )}
             </div>

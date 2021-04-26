@@ -1,4 +1,4 @@
-import React, { ReactElement, KeyboardEvent } from 'react';
+import React, { ReactElement, KeyboardEvent, memo } from 'react';
 import { Flag } from 'semantic-ui-react';
 import { useTranslation } from 'react-i18next';
 
@@ -66,4 +66,4 @@ const LanguageSelect = (): ReactElement => {
     );
 };
 
-export default LanguageSelect;
+export default memo(LanguageSelect);
